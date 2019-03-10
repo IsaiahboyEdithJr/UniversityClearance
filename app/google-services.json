@@ -1,0 +1,55 @@
+ {
+  "project_info": {
+    "project_number": "187256498365",
+    "firebase_url": "https://clearance-64d2e.firebaseio.com",
+    "project_id": "clearance-64d2e",
+    "storage_bucket": "clearance-64d2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187256498365:android:c3b8c58bedf917f1",
+        "android_client_info": {
+          "package_name": "com.example.utumbi_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187256498365-aubjarci6aeuhqi2r2r1c4cs5nfff5ee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.utumbi_project",
+            "certificate_hash": "82e106680a3740d85f762d9b6ec4daa28d077da7"
+          }
+        },
+        {
+          "client_id": "187256498365-vnj4slo5ofacbpontulhjpqtar64td5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvKuaCy2f-nf_wZv2eMFv9i-Bldj5NFOI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187256498365-vnj4slo5ofacbpontulhjpqtar64td5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

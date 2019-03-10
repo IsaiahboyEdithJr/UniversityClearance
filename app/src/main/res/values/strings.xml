@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">ClearApp</string>
+    <string name="reg_no_et_hint">Registration Number</string>
+    <string name="first_et_hint">First Name</string>
+    <string name="last_et_hint">Last Name</string>
+    <string name="phone_et_hint">Contact</string>
+    <string name="email_et_hint">Email</string>
+    <string name="logo_dec">Kisii Logo</string>
+    <string name="welcome_text">Welcome to our online clearance system for Kisii University</string>
+    <string name="floss_text">Get cleared from Anywhere you want!</string>
+    <string name="continue_btn_text">Continue</string>
+    <string name="create_account_text">create new account</string>
+    <string name="login_btn_text">Login</string>
+    <string name="remember_me_text">Remember me</string>
+    <string name="pwd_hint">password</string>
+    <string name="reg_no_hint">School Email Address</string>
+    <string name="add_student_btn_text">Add Student</string>
+
+    <!--Spinner Items-->
+    <string-array name="courses">
+        <item>--Course--</item>
+        <item>Computer Science</item>
+        <item>Software Engineering</item>
+        <item>Applied Computer Science</item>
+        <item>Information Technology</item>
+
+    </string-array>
+    <string-array name="campus">
+        <item>--Campus--</item>
+        <item>Main</item>
+        <item>Kisumu</item>
+        <item>Eldoret</item>
+        <item>Kericho</item>
+        <item>Nyamira</item>
+    </string-array>
+    <string-array name="program">
+        <item>--Program--</item>
+        <item>KUCCPS</item>
+        <item>SSP</item>
+    </string-array>
+    <string-array name="faculty">
+        <item>--Faculty--</item>
+        <item>FIST</item>
+        <item>LAW</item>
+        <item>SOBE</item>
+        <item>SPAS</item>
+        <item>Agriculture</item>
+        <item>Education</item>
+        <item>Health Sciences</item>
+    </string-array>
+
+    <string name="title_activity_student_dashboard">StudentDashboard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Students Name</string>
+    <string name="nav_header_subtitle">Students Registration Number</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="student_clearance_status_title_tv_text">Student Clearance Status</string>
+    <string name="not_cleared_text">Not Cleared</string>
+    <string name="clearance_status_desc">Clearance Status</string>
+    <string name="stud_text">Student</string>
+    <string name="officer_text">Clearing Officer</string>
+    <string name="admin_text">Administrator</string>
+    <string name="clearance_negative_status_text">Stuent Not Cleared</string>
+    <string name="user_avatar_desc">User Avatar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_admin_dashboard">AdminDashboardActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_officer_dashboard">OfficerDashboardActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="department_name">Department Name</string>
+    <string name="action">Action</string>
+    <string name="status">Status</string>
+    <string name="dean_of_facuty">Dean Of Facuty</string>
+    <string name="chairman_department">Chairman Department</string>
+    <string name="not_cleared">Not Cleared</string>
+    <string name="senior_accountant">Senior Accountant</string>
+    <string name="registrar_a">Registrar(A)</string>
+    <string name="computer_lab">Computer Lab</string>
+    <string name="library">Library</string>
+    <string name="hotels">Hotels</string>
+    <string name="medical">Medical</string>
+    <string name="catering">Catering</string>
+    <string name="game_sports">Game/Sports</string>
+    <string name="security_dept">Security Dept</string>
+    <string name="request">Request</string>
+    <string name="student_details">Student Details</string>
+    <string name="edit_details">Edit Details</string>
+    <string name="logout">Logout</string>
+    <string name="details_name_tv_text">Name:</string>
+    <string name="det_studs_name_tv_text">Students\'s Name</string>
+    <string name="det_email_tv_text">Email:</string>
+    <string name="det_stud_email">wereuallan@gmail.com</string>
+    <string name="det_stud_reg_no_tv_text">Reg/No:</string>
+    <string name="det_stud_reg_no">IN13/20412/15</string>
+    <string name="det_stud_faculty_tv_text">Faculty:</string>
+    <string name="stud_faculty">Information Sience And Tech</string>
+    <string name="det_stud_course_tv_text">Course:</string>
+    <string name="studs_course">Computer Science</string>
+    <string name="det_stud_program_tv_text">Program:</string>
+    <string name="stud_program">KUCCPS</string>
+    <string name="det_stud_campus_tv_text">Campus:</string>
+    <string name="stude_campus">Main</string>
+    <string name="update_text">Update</string>
+
+</resources>

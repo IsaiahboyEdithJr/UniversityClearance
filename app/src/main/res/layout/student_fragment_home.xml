@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StudentHomeActivity"
+    tools:showIn="@layout/activity_student_home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimaryDark"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.AppBarLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_dark"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:text="@string/clearance_negative_status_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/department_name"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/action"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/status"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/std_text_size" />
+            </TableRow>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height"
+                android:background="?android:attr/listDivider" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/dean_of_facuty"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/chairman_department"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/senior_accountant"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/registrar_a"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/computer_lab"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/library"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/hotels"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/medical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/catering"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="@string/game_sports"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/security_dept"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/request"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/mag_8dp"
+                    android:paddingBottom="@dimen/mag_8dp"
+                    android:text="@string/not_cleared"
+                    android:textColor="@android:color/white" />
+
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</ScrollView>
