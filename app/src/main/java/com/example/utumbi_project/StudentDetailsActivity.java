@@ -12,13 +12,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class StudentDetailsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFireStoreDb;
+
+    //Widgets
+    private TextView nameTV, emailTV, regnoTV, facultyTV, courseTV, programTV, campusTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,7 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
 
         //Instantiating the FirebaseAuth Member Variable for getting the current Authenticated User
         mAuth = FirebaseAuth.getInstance();
+        mFireStoreDb = FirebaseFirestore.getInstance();
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -48,6 +58,51 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
         View navHeaderView = navigation.getHeaderView(0);
         ImageView navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
         navHeaderIV.setImageResource(R.mipmap.ic_launcher);
+
+        initTextViews();
+
+        populateTextViews();
+    }
+
+    private void populateTextViews() {
+        if (mAuth.getCurrentUser() != null) {
+            DocumentReference studRef = mFireStoreDb.collection("students").document(mAuth.getCurrentUser().getUid());
+
+            studRef.get().addOnCompleteListener(
+                    task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                StudentModel student = document.toObject(StudentModel.class);
+
+                                nameTV.setText(student.getfName() + ' ' + student.getlName());
+                                emailTV.setText(mAuth.getCurrentUser().getEmail());
+                                regnoTV.setText(student.getfName());
+                                courseTV.setText(student.getCourse());
+                                facultyTV.setText(student.getFaculty());
+                                campusTV.setText(student.getCampus());
+                                programTV.setText(student.getProgram());
+
+                            } else {
+                                Toast.makeText(this, "The referenced document is null", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(this, "Getting student detals: " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+        }
+    }
+
+    private void initTextViews() {
+
+        nameTV = findViewById(R.id.stud_name_tv);
+        emailTV = findViewById(R.id.stud_email);
+        regnoTV = findViewById(R.id.stud_regno);
+        courseTV = findViewById(R.id.stud_course);
+        facultyTV = findViewById(R.id.stud_faculty);
+        campusTV = findViewById(R.id.stud_campus);
+        programTV = findViewById(R.id.stud_program);
 
     }
 

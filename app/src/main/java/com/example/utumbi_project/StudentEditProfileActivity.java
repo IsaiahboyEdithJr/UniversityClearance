@@ -29,14 +29,10 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class StudentEditProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -92,6 +88,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
         facultySpinner = findViewById(R.id.faculty_spinner);
         campusSpinner = findViewById(R.id.campus_spinner);
         programSpinner = findViewById(R.id.program_spinner);
+        uploadAvatarPB = findViewById(R.id.ep_upload_avatar_pb);
         initSpinners();
 
         fnameTIET = findViewById(R.id.ep_fname_tiet);
@@ -108,7 +105,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
     private void upload() {
 
-        if (imageUri == null) {
+        if (imageUri != null) {
             String userUid = mAuth.getCurrentUser().getUid();
             StorageReference fileRef = mStorageRef.child(userUid + '.' + getFileExtension(imageUri));
 
@@ -118,7 +115,6 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
             uploadImageTask.addOnSuccessListener(
                     taskSnapshot -> {
                         //Add a student Map in a firestore collection
-
                         String fName = fnameTIET.getText().toString();
                         String lName = lnameTIET.getText().toString();
                         String contact = phoneTIET.getText().toString();
@@ -130,17 +126,11 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
                         if (!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName) && !TextUtils.isEmpty(contact)) {
 
-                            Map<String, String> studentMap = new HashMap<>();
-                            studentMap.put("fName", fName);
-                            studentMap.put("lName", lName);
-                            studentMap.put("contact", contact);
-                            studentMap.put("imageUrl", imageUrl);
-                            studentMap.put("course", course);
-                            studentMap.put("faculty", faculty);
-                            studentMap.put("campus", campus);
-                            studentMap.put("program", program);
+                            StudentModel student = new StudentModel(fName, lName, contact, imageUrl, course, faculty, campus, program);
 
-                            mFirestore.collection("students").document(userUid).set(studentMap)
+                            mFirestore.collection("students")
+                                    .document(userUid)
+                                    .set(student)
                                     .addOnCompleteListener(
                                             task -> {
                                                 if (task.isSuccessful()) {
@@ -210,13 +200,10 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
         facultySpinner.setAdapter(facultyAdapter);
     }
-
     // Handle officer_bottom_navigation view item clicks here
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Handle officer_bottom_navigation view item clicks here
         int id = menuItem.getItemId();
-
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, StudentHomeActivity.class);
             startActivity(intent);

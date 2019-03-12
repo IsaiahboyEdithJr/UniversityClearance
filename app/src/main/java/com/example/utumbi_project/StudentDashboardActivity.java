@@ -1,6 +1,8 @@
 package com.example.utumbi_project;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class StudentDashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,6 +33,7 @@ public class StudentDashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_student_dashboard);
 
         mAuth = FirebaseAuth.getInstance();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,6 +49,21 @@ public class StudentDashboardActivity extends AppCompatActivity
         ImageView navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
 
         navHeaderIV.setOnClickListener(view -> Toast.makeText(this, "The Image View Can be targeted", Toast.LENGTH_SHORT).show());
+
+        if (mAuth.getCurrentUser() != null) {
+            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("avatars").child(mAuth.getCurrentUser().getUid() + ".jpg");
+
+
+            final long MB = 1024 * 1024;
+            fileRef.getBytes(MB)
+                    .addOnSuccessListener(
+                            bytes -> {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                navHeaderIV.setImageBitmap(bitmap);
+                            }
+                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        }
+
     }
 
     @Override
