@@ -20,7 +20,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="@color/colorPrimary"
         app:headerLayout="@layout/nav_header_student_dashboard"
         app:menu="@menu/activity_student_dashboard_drawer" />
 

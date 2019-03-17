@@ -1,6 +1,8 @@
 package com.example.utumbi_project;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,14 +22,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class StudentDetailsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFireStoreDb;
+    private StorageReference mStore;
 
     //Widgets
     private TextView nameTV, emailTV, regnoTV, facultyTV, courseTV, programTV, campusTV;
+    private ImageView navHeaderIV;
+    private TextView navHeaderStudentNameTV;
+    private TextView navHeaderRegNoTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +45,13 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
         //Instantiating the FirebaseAuth Member Variable for getting the current Authenticated User
         mAuth = FirebaseAuth.getInstance();
         mFireStoreDb = FirebaseFirestore.getInstance();
+        mStore = FirebaseStorage.getInstance().getReference().child("avatars");
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Student Details");
 
         //Adding the drawer toggle icon in the toolbar
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -56,12 +67,12 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
 
         //Getting the ImageView to show the profile picture
         View navHeaderView = navigation.getHeaderView(0);
-        ImageView navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
-        navHeaderIV.setImageResource(R.mipmap.ic_launcher);
 
+        navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
+        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
         initTextViews();
 
-        populateTextViews();
     }
 
     private void populateTextViews() {
@@ -73,7 +84,7 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                StudentModel student = document.toObject(StudentModel.class);
+                                Student student = document.toObject(Student.class);
 
                                 nameTV.setText(student.getfName() + ' ' + student.getlName());
                                 emailTV.setText(mAuth.getCurrentUser().getEmail());
@@ -82,6 +93,8 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                                 facultyTV.setText(student.getFaculty());
                                 campusTV.setText(student.getCampus());
                                 programTV.setText(student.getProgram());
+
+                                updateNavHeaderLayout(student);
 
                             } else {
                                 Toast.makeText(this, "The referenced document is null", Toast.LENGTH_SHORT).show();
@@ -92,6 +105,22 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                     }
             );
         }
+    }
+
+    private void updateNavHeaderLayout(Student student) {
+        StorageReference fileRef = mStore.child(student.getImageUrl());
+
+        final long MB = 1024 * 1024;
+        fileRef.getBytes(MB)
+                .addOnSuccessListener(
+                        bytes -> {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            navHeaderIV.setImageBitmap(bitmap);
+                            navHeaderIV.setScaleType(ImageView.ScaleType.FIT_XY);
+                        }
+                ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+
+        navHeaderStudentNameTV.setText(student.getfName() + ' ' + student.getlName());
     }
 
     private void initTextViews() {
@@ -109,10 +138,13 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
     // Handle officer_bottom_navigation view item clicks here
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Handle officer_bottom_navigation view item clicks here.
+
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_home) {
+            Intent intent = new Intent(this, StudentDashboardActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_request) {
             Intent intent = new Intent(this, StudentHomeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_edit_details) {
@@ -153,6 +185,8 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             startActivity(new Intent(this, LoginRouterActivity.class));
+        } else {
+            populateTextViews();
         }
     }
 }

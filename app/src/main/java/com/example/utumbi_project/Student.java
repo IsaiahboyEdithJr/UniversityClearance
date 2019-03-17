@@ -2,7 +2,7 @@ package com.example.utumbi_project;
 
 import java.io.Serializable;
 
-public class StudentModel implements Serializable {
+public class Student implements Serializable {
 
     private String fName;
     private String lName;
@@ -13,10 +13,10 @@ public class StudentModel implements Serializable {
     private String campus;
     private String program;
 
-    public StudentModel() {
+    public Student() {
     }
 
-    public StudentModel(String fName, String lName, String contact, String imageUrl, String course, String faculty, String campus, String program) {
+    public Student(String fName, String lName, String contact, String imageUrl, String course, String faculty, String campus, String program) {
         this.fName = fName;
         this.lName = lName;
         this.contact = contact;

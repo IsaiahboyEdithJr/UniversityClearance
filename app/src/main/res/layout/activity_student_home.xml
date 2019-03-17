@@ -5,10 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-
 
     <include
         layout="@layout/student_fragment_home"
@@ -20,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_student_dashboard"
         app:menu="@menu/activity_student_dashboard_drawer" />

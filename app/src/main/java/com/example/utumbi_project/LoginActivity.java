@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,7 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText emailET, pwdET;
     private ProgressBar loginPB;
 
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mStoreDb;
 
     private String userGroup = "";
 
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         userGroup = getIntent().getStringExtra("GROUP");
 
         mAuth = FirebaseAuth.getInstance();
+        mStoreDb = FirebaseFirestore.getInstance();
 
         loginBtn = findViewById(R.id.btnLogin);
         emailET = findViewById(R.id.login_email_tiet);
@@ -47,10 +50,20 @@ public class LoginActivity extends AppCompatActivity {
 
                         loginUser(email, pwd);
                     } else {
-                        Toast.makeText(this, "Fill bothe fields", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Fill both fields", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
+
+        Button loginSignupBtn = findViewById(R.id.login_signup_btn);
+        loginSignupBtn.setOnClickListener(view -> {
+
+            Intent intent = new Intent(this, SignupActivity.class);
+            intent.putExtra("GROUP", userGroup);
+            startActivity(intent);
+            finish();
+
+        });
     }
 
     private void loginUser(String email, String pwd) {
@@ -68,13 +81,13 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 break;
                             case "ADMIN":
-                                startActivity(new Intent(this, AdminDashboard.class));
+                                startActivity(new Intent(this, AdminDashboardActivity.class));
                                 finish();
                                 break;
                         }
 
                     } else {
-                        Toast.makeText(this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Login Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     loginPB.setVisibility(View.GONE);
@@ -85,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -100,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                     break;
                 case "ADMIN":
-                    startActivity(new Intent(this, AdminDashboard.class));
+                    startActivity(new Intent(this, AdminDashboardActivity.class));
                     finish();
                     break;
             }

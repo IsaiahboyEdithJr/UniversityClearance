@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,41 +11,44 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/login_tb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"></android.support.v7.widget.Toolbar>
+            android:background="@color/colorPrimaryDark"
+            app:titleTextColor="@android:color/white" />
+
     </android.support.design.widget.AppBarLayout>
 
     <Button
         android:id="@+id/login_router_stud_btn"
-        android:layout_width="match_parent"
+        android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:text="@string/stud_text"
         android:layout_margin="12dp"
-        android:background="@drawable/round_corner_btn"/>
+        android:background="@drawable/round_corner_btn"
+        android:text="@string/stud_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/login_router_officer_btn"
-        android:layout_width="match_parent"
+        android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"
-        android:text="@string/officer_text"
         android:layout_margin="12dp"
-        android:background="@drawable/round_corner_btn"/>
+        android:background="@drawable/round_corner_btn"
+        android:text="@string/officer_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/login_router_admin_btn"
-        android:layout_width="match_parent"
+        android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"
-        android:text="@string/admin_text"
         android:layout_margin="12dp"
-        android:background="@drawable/round_corner_btn"/>
+        android:background="@drawable/round_corner_btn"
+        android:text="@string/admin_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

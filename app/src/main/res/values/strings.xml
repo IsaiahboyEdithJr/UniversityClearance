@@ -49,6 +49,27 @@
         <item>Health Sciences</item>
     </string-array>
 
+    <string-array name="departments">
+        <item>Dean Of Faculty</item>
+        <item>Chairman Of Dept</item>
+        <item>Senior Accountant</item>
+        <item>Registrar(A)</item>
+        <item>Computer Lab</item>
+        <item>Library</item>
+        <item>Hostels</item>
+        <item>Medical</item>
+        <item>Catering</item>
+        <item>Game/Sports</item>
+        <item>Security Department</item>
+    </string-array>
+
+    <string-array name="clearance_status">
+        <item>Cleared</item>
+        <item>Pending</item>
+        <item>Rejected</item>
+        <item>Not Requested</item>
+    </string-array>
+
     <string name="title_activity_student_dashboard">StudentDashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -62,11 +83,12 @@
     <string name="stud_text">Student</string>
     <string name="officer_text">Clearing Officer</string>
     <string name="admin_text">Administrator</string>
-    <string name="clearance_negative_status_text">Stuent Not Cleared</string>
+    <string name="clearance_negative_status_text">Student Not Cleared</string>
     <string name="user_avatar_desc">User Avatar</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="officer_home_frag">Welcome Home Officer</string>
+    <string name="officer_notifications_frag">Officer Notifications</string>
+    <string name="officer_details">Officer Details</string>
     <string name="title_activity_admin_dashboard">AdminDashboardActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_officer_dashboard">OfficerDashboardActivity</string>
@@ -76,19 +98,7 @@
     <string name="department_name">Department Name</string>
     <string name="action">Action</string>
     <string name="status">Status</string>
-    <string name="dean_of_facuty">Dean Of Facuty</string>
-    <string name="chairman_department">Chairman Department</string>
     <string name="not_cleared">Not Cleared</string>
-    <string name="senior_accountant">Senior Accountant</string>
-    <string name="registrar_a">Registrar(A)</string>
-    <string name="computer_lab">Computer Lab</string>
-    <string name="library">Library</string>
-    <string name="hotels">Hotels</string>
-    <string name="medical">Medical</string>
-    <string name="catering">Catering</string>
-    <string name="game_sports">Game/Sports</string>
-    <string name="security_dept">Security Dept</string>
-    <string name="request">Request</string>
     <string name="student_details">Student Details</string>
     <string name="edit_details">Edit Details</string>
     <string name="logout">Logout</string>
@@ -107,5 +117,15 @@
     <string name="det_stud_campus_tv_text">Campus:</string>
     <string name="stude_campus">Main</string>
     <string name="update_text">Update</string>
+    <string name="cleared">Cleared</string>
+    <string name="officers">Clearing Officers</string>
+    <string name="web_dev">Web Developer</string>
+    <string name="dev">A developer</string>
+    <string name="fsd">Full Stack Developer</string>
+    <string name="software_dev">Software Developer</string>
+    <string name="home">Home</string>
+    <string name="need_an_account">Need An Account ?</string>
+    <string name="register_text">Register</string>
+    <string name="already_have_an_account">Already Have An Account?</string>
 
 </resources>
