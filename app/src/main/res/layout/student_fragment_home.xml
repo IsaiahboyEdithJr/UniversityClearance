@@ -3,9 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/darker_gray"
     android:orientation="vertical"
     tools:showIn="@layout/activity_student_home">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@android:color/white"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <TextView
         android:id="@+id/stud_general_clearance_status-tv"
@@ -22,6 +38,7 @@
         android:id="@+id/clearance_details_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
         android:layout_margin="@dimen/mag_8dp"
         android:dividerHeight="@dimen/mag_8dp"
         android:divider="@null"/>

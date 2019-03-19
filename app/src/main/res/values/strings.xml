@@ -18,7 +18,7 @@
 
     <!--Spinner Items-->
     <string-array name="courses">
-        <item>--Course--</item>
+        <item>-- Course --</item>
         <item>Computer Science</item>
         <item>Software Engineering</item>
         <item>Applied Computer Science</item>
@@ -26,7 +26,7 @@
 
     </string-array>
     <string-array name="campus">
-        <item>--Campus--</item>
+        <item>-- Campus --</item>
         <item>Main</item>
         <item>Kisumu</item>
         <item>Eldoret</item>
@@ -34,12 +34,12 @@
         <item>Nyamira</item>
     </string-array>
     <string-array name="program">
-        <item>--Program--</item>
+        <item>-- Program --</item>
         <item>KUCCPS</item>
         <item>SSP</item>
     </string-array>
     <string-array name="faculty">
-        <item>--Faculty--</item>
+        <item>-- Faculty --</item>
         <item>FIST</item>
         <item>LAW</item>
         <item>SOBE</item>
@@ -73,7 +73,7 @@
     <string name="title_activity_student_dashboard">StudentDashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Students Name</string>
+    <string name="nav_header_title">Username</string>
     <string name="nav_header_subtitle">Students Registration Number</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -127,5 +127,12 @@
     <string name="need_an_account">Need An Account ?</string>
     <string name="register_text">Register</string>
     <string name="already_have_an_account">Already Have An Account?</string>
+    <string name="change_password">Change Password</string>
+    <string name="student_name">Student Name</string>
+    <string name="employee_id">Employee ID</string>
+    <string name="lecturer_name">Officer Name</string>
+    <string name="add_officer">Add Officer</string>
+    <string name="finish_setup">Finish Setup</string>
+    <string name="administratir_name">Administratir Name</string>
 
 </resources>

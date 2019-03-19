@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.utumbi_project.adapters.ClearanceDetailsAdapter;
 import com.example.utumbi_project.models.ClearanceModel;
+import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -97,7 +99,7 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
         List<ClearanceModel> clearanceModels = new ArrayList<>();
 
         for (int i = 0; i < depts.length; i++) {
-            clearanceModels.add(new ClearanceModel(depts[i], possibleStatuses[((int)Math.random() * 3)]));
+            clearanceModels.add(new ClearanceModel(depts[i], possibleStatuses[(int) Math.floor(Math.random() * 4)]));
         }
 
         ClearanceDetailsAdapter adapter = new ClearanceDetailsAdapter(this, clearanceModels);
@@ -150,6 +152,32 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     }
 
     @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+        getMenuInflater().inflate(R.menu.student_clearance_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.option_menu_start_clearance) {
+            requestToBeCleared();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void requestToBeCleared() {
+
+        // TODO: 3/17/19
+        Toast.makeText(this, "Request Officers To be Cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -197,11 +225,11 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
                         bytes -> {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             navHeaderIV.setImageBitmap(bitmap);
-                            navHeaderIV.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-        navHeaderStudentNameTV.setText(student.getfName() + ' ' + student.getlName());
+        navHeaderStudentNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
     }
 
 

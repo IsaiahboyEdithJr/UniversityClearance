@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -165,11 +166,11 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
                         bytes -> {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             navHeaderIV.setImageBitmap(bitmap);
-                            navHeaderIV.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-        navHeaderStudentNameTV.setText(student.getfName() + ' ' + student.getlName());
+        navHeaderStudentNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
     }
 
 

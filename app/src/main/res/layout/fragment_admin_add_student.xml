@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="8dp"
+    tools:context=".adminfragments.AddStudentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/regno_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:gravity="center_horizontal"
+            android:hint="@string/reg_no_et_hint"
+            android:inputType="textPersonName"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/whiteTransparent" />
+
+        <EditText
+            android:id="@+id/name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:backgroundTint="@android:color/white"
+            android:gravity="center_horizontal"
+            android:hint="@string/student_name"
+            android:inputType="textPersonName"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/whiteTransparent" />
+
+        <EditText
+            android:id="@+id/contact_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:backgroundTint="@android:color/white"
+            android:gravity="center_horizontal"
+            android:hint="@string/phone_et_hint"
+            android:inputType="phone"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/whiteTransparent" />
+
+        <Spinner
+            android:id="@+id/course_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/faculty_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/campus_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <Spinner
+            android:id="@+id/program_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_student_widgets_mag_top"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/add_student_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/add_student_btn_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+</ScrollView>

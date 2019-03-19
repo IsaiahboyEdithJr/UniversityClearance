@@ -1,4 +1,4 @@
-package com.example.utumbi_project;
+package com.example.utumbi_project.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,11 +1,11 @@
-package com.example.utumbi_project;
+package com.example.utumbi_project.models;
 
 import java.io.Serializable;
 
 public class Student implements Serializable {
 
-    private String fName;
-    private String lName;
+    private String name;
+    private String regNo;
     private String contact;
     private String imageUrl;
     private String course;
@@ -16,9 +16,9 @@ public class Student implements Serializable {
     public Student() {
     }
 
-    public Student(String fName, String lName, String contact, String imageUrl, String course, String faculty, String campus, String program) {
-        this.fName = fName;
-        this.lName = lName;
+    public Student(String regNo, String name, String contact, String imageUrl, String course, String faculty, String campus, String program) {
+        this.regNo = regNo;
+        this.name = name;
         this.contact = contact;
         this.imageUrl = imageUrl;
         this.course = course;
@@ -27,20 +27,12 @@ public class Student implements Serializable {
         this.program = program;
     }
 
-    public String getfName() {
-        return fName;
+    public String getName() {
+        return name;
     }
 
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public String getlName() {
-        return lName;
-    }
-
-    public void setlName(String lName) {
-        this.lName = lName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContact() {
@@ -89,5 +81,13 @@ public class Student implements Serializable {
 
     public void setProgram(String program) {
         this.program = program;
+    }
+
+    public String getRegNo() {
+        return regNo;
+    }
+
+    public void setRegNo(String regNo) {
+        this.regNo = regNo;
     }
 }

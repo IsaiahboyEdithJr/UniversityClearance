@@ -1,4 +1,4 @@
-package com.example.utumbi_project;
+package com.example.utumbi_project.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,17 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.utumbi_project.OfficerNotificationsFragment.OnListFragmentInteractionListener;
+import com.example.utumbi_project.R;
+import com.example.utumbi_project.adminfragments.NotificationsFragment.OnListFragmentInteractionListener;
 import com.example.utumbi_project.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerView.Adapter<MyOfficerNotificationsFragmentRecyclerViewAdapter.ViewHolder> {
+/**
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * specified {@link OnListFragmentInteractionListener}.
+ * TODO: Replace the implementation with code for your data type.
+ */
+public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyNotificationsRecyclerViewAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyOfficerNotificationsFragmentRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyNotificationsRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -24,12 +30,13 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_officernotifications_item, parent, false);
+                .inflate(R.layout.fragment_notification, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
@@ -38,12 +45,11 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
+
     }
 
     @Override
@@ -59,6 +65,7 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
 
         public ViewHolder(View view) {
             super(view);
+
             mView = view;
             mIdView =  view.findViewById(R.id.item_number);
             mContentView =  view.findViewById(R.id.content);

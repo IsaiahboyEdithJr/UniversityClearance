@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,7 +44,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
     //Activity widgets
     private ImageView avatarIV;
-    private TextInputEditText fnameTIET, lnameTIET, phoneTIET;
+    private TextInputEditText nameTIET, phoneTIET;
     private Spinner courseSpinner, programSpinner, facultySpinner, campusSpinner;
     private ProgressBar uploadAvatarPB;
 
@@ -104,8 +105,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
         uploadAvatarPB = findViewById(R.id.ep_upload_avatar_pb);
         initSpinners();
 
-        fnameTIET = findViewById(R.id.ep_fname_tiet);
-        lnameTIET = findViewById(R.id.ep_lname_tiet);
+        nameTIET = findViewById(R.id.ep_name_tiet);
         phoneTIET = findViewById(R.id.ep_phone_tiet);
 
         avatarIV = findViewById(R.id.ep_avatar_iv);
@@ -129,8 +129,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
                     taskSnapshot -> {
 
                         //Add a student Map in a firestore collection
-                        String fName = fnameTIET.getText().toString();
-                        String lName = lnameTIET.getText().toString();
+                        String name = nameTIET.getText().toString();
                         String contact = phoneTIET.getText().toString();
                         String imageUrl = taskSnapshot.getMetadata().getName();
                         String program = programSpinner.getSelectedItem().toString();
@@ -138,9 +137,9 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
                         String campus = campusSpinner.getSelectedItem().toString();
                         String faculty = facultySpinner.getSelectedItem().toString();
 
-                        if (!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName) && !TextUtils.isEmpty(contact)) {
+                        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(contact)) {
 
-                            Student student = new Student(fName, lName, contact, imageUrl, course, faculty, campus, program);
+                            Student student = new Student(null, name, contact, imageUrl, course, faculty, campus, program);
 
                             mFirestore.collection("students")
                                     .document(userUid)
@@ -277,11 +276,11 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
     }
 
     private void populateDetails(Student student) {
-        fnameTIET.setText(student.getfName());
-        lnameTIET.setText(student.getlName());
+        nameTIET.setText(student.getName());
         phoneTIET.setText(student.getContact());
 
-        navHeaderNameTV.setText(student.getfName() + ' ' + student.getlName());
+        navHeaderNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
 
         StorageReference fileRef = mStorageRef.child(student.getImageUrl());
 
@@ -291,7 +290,6 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
                         bytes -> {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             navHeaderIV.setImageBitmap(bitmap);
-                            navHeaderIV.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
     }

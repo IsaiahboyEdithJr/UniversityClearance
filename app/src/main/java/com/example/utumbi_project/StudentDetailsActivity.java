@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -86,9 +87,9 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                             if (document.exists()) {
                                 Student student = document.toObject(Student.class);
 
-                                nameTV.setText(student.getfName() + ' ' + student.getlName());
+                                nameTV.setText(student.getName());
                                 emailTV.setText(mAuth.getCurrentUser().getEmail());
-                                regnoTV.setText(student.getfName());
+                                regnoTV.setText(student.getRegNo());
                                 courseTV.setText(student.getCourse());
                                 facultyTV.setText(student.getFaculty());
                                 campusTV.setText(student.getCampus());
@@ -116,11 +117,11 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                         bytes -> {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             navHeaderIV.setImageBitmap(bitmap);
-                            navHeaderIV.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-        navHeaderStudentNameTV.setText(student.getfName() + ' ' + student.getlName());
+        navHeaderStudentNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
     }
 
     private void initTextViews() {
