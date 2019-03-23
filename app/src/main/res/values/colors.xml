@@ -5,4 +5,5 @@
     <color name="colorAccent">#f44336</color>
     <color name="whiteTransparent">#80ffffff</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="eggShell">#F6C487</color>
 </resources>

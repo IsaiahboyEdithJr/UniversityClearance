@@ -110,6 +110,8 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
 
     private void updateNavHeaderLayout(Student student) {
         StorageReference fileRef = mStore.child(student.getImageUrl());
+        navHeaderStudentNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
 
         final long MB = 1024 * 1024;
         fileRef.getBytes(MB)
@@ -120,8 +122,6 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-        navHeaderStudentNameTV.setText(student.getName());
-        navHeaderRegNoTV.setText(student.getRegNo());
     }
 
     private void initTextViews() {

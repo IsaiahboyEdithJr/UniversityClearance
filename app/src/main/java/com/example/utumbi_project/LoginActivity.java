@@ -58,10 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         Button loginSignupBtn = findViewById(R.id.login_signup_btn);
         loginSignupBtn.setOnClickListener(view -> {
 
-            Intent intent = new Intent(this, SignupActivity.class);
-            intent.putExtra("GROUP", userGroup);
-            startActivity(intent);
-            finish();
+            if (userGroup != "ADMIN") {
+                Intent intent = new Intent(this, SignupActivity.class);
+                intent.putExtra("GROUP", userGroup);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "You can't sign up as the administrator", Toast.LENGTH_SHORT).show();
+            }
 
         });
     }

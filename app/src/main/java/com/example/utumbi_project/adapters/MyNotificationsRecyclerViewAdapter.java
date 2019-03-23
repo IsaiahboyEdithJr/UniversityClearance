@@ -7,24 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.utumbi_project.R;
-import com.example.utumbi_project.adminfragments.NotificationsFragment.OnListFragmentInteractionListener;
-import com.example.utumbi_project.dummy.DummyContent.DummyItem;
+import com.example.utumbi_project.adminfragments.NotificationsFragment.OnAdminNotifiedListener;
+import com.example.utumbi_project.models.AdminNotification;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyNotificationsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<AdminNotification> mValues;
+    private final OnAdminNotifiedListener mListener;
 
-    public MyNotificationsRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyNotificationsRecyclerViewAdapter(List<AdminNotification> items, OnAdminNotifiedListener listener) {
+
         mValues = items;
         mListener = listener;
+
     }
 
     @Override
@@ -38,15 +35,12 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(holder.mItem.getEmail());
+        holder.mContentView.setText(holder.mItem.getGroup());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+        holder.mView.setOnClickListener(View -> {
+            if (null != mListener) {
+                mListener.onListFragmentInteraction(holder.mItem);
             }
         });
 
@@ -54,21 +48,24 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
 
     @Override
     public int getItemCount() {
+
         return mValues.size();
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public AdminNotification mItem;
 
         public ViewHolder(View view) {
             super(view);
 
             mView = view;
-            mIdView =  view.findViewById(R.id.item_number);
-            mContentView =  view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.item_number);
+            mContentView = view.findViewById(R.id.content);
         }
 
         @Override

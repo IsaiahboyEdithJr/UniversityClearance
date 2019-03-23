@@ -22,6 +22,7 @@ import com.example.utumbi_project.adminfragments.EditProfileFragment;
 import com.example.utumbi_project.adminfragments.HomeFragment;
 import com.example.utumbi_project.adminfragments.NotificationsFragment;
 import com.example.utumbi_project.dummy.DummyContent;
+import com.example.utumbi_project.models.AdminNotification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,7 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminDashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NotificationsFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, NotificationsFragment.OnAdminNotifiedListener {
 
 
     //Firebase variables
@@ -162,16 +163,19 @@ public class AdminDashboardActivity extends AppCompatActivity
             startActivity(new Intent(this, LoginRouterActivity.class));
             finish();
         } else {
-            getAdminDetails();
+            getAdminDetails(user.getUid());
         }
     }
 
-    private void getAdminDetails() {
+    private void getAdminDetails(String userId) {
+
+        // TODO: 3/20/19 Get user details and display them on the homepage
+        displayFragment(R.id.admin_nav_home);
 
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+    public void onListFragmentInteraction(AdminNotification notification) {
+        Toast.makeText(this, notification.toString(), Toast.LENGTH_SHORT).show();
     }
 }

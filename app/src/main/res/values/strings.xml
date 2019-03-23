@@ -134,5 +134,8 @@
     <string name="add_officer">Add Officer</string>
     <string name="finish_setup">Finish Setup</string>
     <string name="administratir_name">Administratir Name</string>
+    <string name="approval">Please wait for Admin\'s Approval</string>
+    <string name="admin_name">Admin Name</string>
+    <string name="admin_details">Admin Details</string>
 
 </resources>

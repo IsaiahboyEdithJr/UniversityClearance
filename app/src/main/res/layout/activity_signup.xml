@@ -15,12 +15,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/logo_dec"
-        android:scaleType="centerCrop"
         android:padding="@dimen/mag_8dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/kulogo" />
 
     <ProgressBar
-        android:id="@+id/login_pb"
+        android:id="@+id/signup_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -82,7 +82,7 @@
         android:id="@+id/signup_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="96dp"
         android:background="@android:color/white"
         android:text="@string/already_have_an_account"
         android:textAllCaps="false"

@@ -9,34 +9,39 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.utumbi_project.adapters.MyNotificationsRecyclerViewAdapter;
 import com.example.utumbi_project.R;
-import com.example.utumbi_project.dummy.DummyContent;
-import com.example.utumbi_project.dummy.DummyContent.DummyItem;
+import com.example.utumbi_project.models.AdminNotification;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 public class NotificationsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnAdminNotifiedListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
+
+    private List<AdminNotification> notifications;
+
     public NotificationsFragment() {
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
+        notifications = new ArrayList<>();
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static NotificationsFragment newInstance(int columnCount) {
         NotificationsFragment fragment = new NotificationsFragment();
@@ -53,12 +58,39 @@ public class NotificationsFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
+
+        // TODO: 3/20/19 Get notifications from firebase
+
+        mFirestore.collection("notifications")
+                .document("admin")
+                .collection("Notifications")
+                .addSnapshotListener(
+                        (@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) -> {
+
+                            if (e != null) {
+
+                                Toast.makeText(getActivity(), "No Notifications Yet", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                                if (dc.getType() == DocumentChange.Type.ADDED) {
+
+                                    notifications.add(dc.getDocument().toObject(AdminNotification.class));
+
+                                }
+                            }
+
+                        }
+                );
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -69,8 +101,9 @@ public class NotificationsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyNotificationsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyNotificationsRecyclerViewAdapter(notifications, mListener));
         }
+
         return view;
     }
 
@@ -78,11 +111,11 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnAdminNotifiedListener) {
+            mListener = (OnAdminNotifiedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnAdminNotifiedListener");
         }
     }
 
@@ -92,18 +125,7 @@ public class NotificationsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    public interface OnAdminNotifiedListener {
+        void onListFragmentInteraction(AdminNotification item);
     }
 }

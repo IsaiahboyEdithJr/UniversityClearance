@@ -173,8 +173,13 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
 
     private void requestToBeCleared() {
 
-        // TODO: 3/17/19
-        Toast.makeText(this, "Request Officers To be Cleared", Toast.LENGTH_SHORT).show();
+        String[] depts = getResources().getStringArray(R.array.departments);
+
+        // TODO: 3/19/19 Initialize students collection for clearance information for every dept
+
+        // TODO: 3/19/19  Send notifications to the relevant officers
+
+
     }
 
     @Override
@@ -219,6 +224,9 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     private void updateNavHeaderLayout(Student student) {
         StorageReference fileRef = mStore.child(student.getImageUrl());
 
+        navHeaderStudentNameTV.setText(student.getName());
+        navHeaderRegNoTV.setText(student.getRegNo());
+
         final long MB = 1024 * 1024;
         fileRef.getBytes(MB)
                 .addOnSuccessListener(
@@ -228,8 +236,7 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
                         }
                 ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-        navHeaderStudentNameTV.setText(student.getName());
-        navHeaderRegNoTV.setText(student.getRegNo());
+
     }
 
 

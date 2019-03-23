@@ -10,8 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.utumbi_project.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeFragment extends Fragment {
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mDb;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -32,6 +38,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        mAuth = FirebaseAuth.getInstance();
+        mDb = FirebaseFirestore.getInstance();
     }
 
 
