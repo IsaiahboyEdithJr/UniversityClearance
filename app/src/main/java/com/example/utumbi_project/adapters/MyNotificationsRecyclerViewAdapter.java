@@ -26,8 +26,7 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_notification, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_notification, parent, false);
         return new ViewHolder(view);
     }
 

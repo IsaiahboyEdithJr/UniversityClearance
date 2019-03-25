@@ -2,10 +2,12 @@ package com.example.utumbi_project.adminfragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +30,18 @@ import javax.annotation.Nullable;
 public class NotificationsFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String TAG = "NotificationsFragment";
+
     private int mColumnCount = 1;
     private OnAdminNotifiedListener mListener;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
 
-    private List<AdminNotification> notifications;
+    private List<AdminNotification> notifications; //Admin notifications list
+    private MyNotificationsRecyclerViewAdapter adminNotificationsAdapter; //The RecyclerView adapter
 
     public NotificationsFragment() {
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
-        notifications = new ArrayList<>();
     }
 
     @SuppressWarnings("unused")
@@ -64,33 +66,15 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
 
-        // TODO: 3/20/19 Get notifications from firebase
+        //Init firebase variables
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
 
-        mFirestore.collection("notifications")
-                .document("admin")
-                .collection("Notifications")
-                .addSnapshotListener(
-                        (@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) -> {
-
-                            if (e != null) {
-
-                                Toast.makeText(getActivity(), "No Notifications Yet", Toast.LENGTH_SHORT).show();
-
-                            }
-
-                            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
-                                if (dc.getType() == DocumentChange.Type.ADDED) {
-
-                                    notifications.add(dc.getDocument().toObject(AdminNotification.class));
-
-                                }
-                            }
-
-                        }
-                );
-
+        //Init the notifications list
+        notifications = new ArrayList<>();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -101,21 +85,54 @@ public class NotificationsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyNotificationsRecyclerViewAdapter(notifications, mListener));
+
+            adminNotificationsAdapter = new MyNotificationsRecyclerViewAdapter(notifications, mListener);
+            recyclerView.setAdapter(adminNotificationsAdapter);
         }
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
+
+        Log.d(TAG, "onViewCreated: Getting notifications");
+
+        mFirestore.collection("notifications")
+                .document("admin")
+                .collection("Notifications")
+                .addSnapshotListener(
+                        (@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) -> {
+
+                            if (e != null) {
+
+                                Toast.makeText(getActivity(), "Error getting notifications: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+                            } else {
+
+                                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                                    if (dc.getType() == DocumentChange.Type.ADDED) {
+
+                                        notifications.add(dc.getDocument().toObject(AdminNotification.class));
+
+                                    }
+                                }
+                            }
+
+                        }
+                );
+
+        adminNotificationsAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
         if (context instanceof OnAdminNotifiedListener) {
             mListener = (OnAdminNotifiedListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnAdminNotifiedListener");
+            throw new RuntimeException(context.toString() + " must implement OnAdminNotifiedListener");
         }
     }
 

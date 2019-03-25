@@ -2,6 +2,8 @@ package com.example.utumbi_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +23,6 @@ import com.example.utumbi_project.adminfragments.AddStudentFragment;
 import com.example.utumbi_project.adminfragments.EditProfileFragment;
 import com.example.utumbi_project.adminfragments.HomeFragment;
 import com.example.utumbi_project.adminfragments.NotificationsFragment;
-import com.example.utumbi_project.dummy.DummyContent;
 import com.example.utumbi_project.models.AdminNotification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -172,6 +173,16 @@ public class AdminDashboardActivity extends AppCompatActivity
         // TODO: 3/20/19 Get user details and display them on the homepage
         displayFragment(R.id.admin_nav_home);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
