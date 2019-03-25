@@ -64,8 +64,8 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
             super(view);
 
             mView = view;
-            mIdView =  view.findViewById(R.id.item_number);
-            mContentView =  view.findViewById(R.id.content);
+            mIdView =  view.findViewById(R.id.user_group_tv);
+            mContentView =  view.findViewById(R.id.user_email_tv);
         }
 
         @Override

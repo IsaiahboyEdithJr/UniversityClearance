@@ -34,8 +34,8 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(holder.mItem.getEmail());
-        holder.mContentView.setText(holder.mItem.getGroup());
+        holder.mIdView.setText(holder.mItem.getGroup());
+        holder.mContentView.setText(holder.mItem.getEmail());
 
         holder.mView.setOnClickListener(View -> {
             if (null != mListener) {
@@ -63,8 +63,8 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
             super(view);
 
             mView = view;
-            mIdView = view.findViewById(R.id.item_number);
-            mContentView = view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.user_group_tv);
+            mContentView = view.findViewById(R.id.user_email_tv);
         }
 
         @Override

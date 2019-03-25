@@ -64,17 +64,12 @@ public class SignupActivity extends AppCompatActivity {
                                     if (mAuth.getCurrentUser() != null) {
                                         sendAdminNotification(new AdminNotification(mAuth.getCurrentUser().getUid(), "approval", userGroup, mAuth.getCurrentUser().getEmail()));
                                     }
-
-                                    mAuth.signOut();
-
                                     startActivity(new Intent(this, HeldupActivity.class));
-
                                     finish();
 
                                 } else {
                                     Toast.makeText(this, "Signup Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
-
                                 signupPb.setVisibility(View.GONE);
                             }
 
@@ -95,20 +90,7 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(
                         task -> {
                             if (task.isSuccessful()) {
-
                                 Toast.makeText(this, "Your request has been sent wait for approval", Toast.LENGTH_LONG).show();
-
-                                new Thread(){
-
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }.start();
                             } else {
                                 Toast.makeText(this, "An error occurred: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }

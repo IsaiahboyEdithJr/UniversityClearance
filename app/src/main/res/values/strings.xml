@@ -137,5 +137,7 @@
     <string name="approval">Please wait for Admin\'s Approval</string>
     <string name="admin_name">Admin Name</string>
     <string name="admin_details">Admin Details</string>
+    <string name="student">Student</string>
+    <string name="dummy_email">example@anyco.xyz</string>
 
 </resources>

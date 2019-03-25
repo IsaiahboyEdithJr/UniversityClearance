@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -96,33 +97,25 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
 
-        Log.d(TAG, "onViewCreated: Getting notifications");
-
         mFirestore.collection("notifications")
                 .document("admin")
                 .collection("Notifications")
                 .addSnapshotListener(
-                        (@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) -> {
+                        (values, e) -> {
 
                             if (e != null) {
-
-                                Toast.makeText(getActivity(), "Error getting notifications: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
-                            } else {
-
-                                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
-                                    if (dc.getType() == DocumentChange.Type.ADDED) {
-
-                                        notifications.add(dc.getDocument().toObject(AdminNotification.class));
-
-                                    }
-                                }
+                                Log.e(TAG, "onViewCreated: ", e);
+                                return;
                             }
+                            for (QueryDocumentSnapshot dc : values) {
+                                AdminNotification notification = dc.toObject(AdminNotification.class);
+                                notifications.add(notification);
+                                adminNotificationsAdapter.notifyDataSetChanged();
 
+                            }
                         }
                 );
 
-        adminNotificationsAdapter.notifyDataSetChanged();
     }
 
     @Override

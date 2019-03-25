@@ -58,11 +58,12 @@ public class LoginActivity extends AppCompatActivity {
         Button loginSignupBtn = findViewById(R.id.login_signup_btn);
         loginSignupBtn.setOnClickListener(view -> {
 
-            if (userGroup != "ADMIN") {
+            if (!userGroup.equalsIgnoreCase("ADMIN")) {
                 Intent intent = new Intent(this, SignupActivity.class);
                 intent.putExtra("GROUP", userGroup);
                 startActivity(intent);
                 finish();
+
             } else {
                 Toast.makeText(this, "You can't sign up as the administrator", Toast.LENGTH_SHORT).show();
             }
@@ -77,14 +78,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         switch (userGroup) {
                             case "STUDENT":
-                                startActivity(new Intent(this, StudentDashboardActivity.class));
-                                finish();
+                                checkStudentDetails(mAuth.getCurrentUser().getUid());
                                 break;
                             case "OFFICER":
-                                startActivity(new Intent(this, OfficerDashboardActivity.class));
-                                finish();
+                                checkOfficerDetails(mAuth.getCurrentUser().getUid());
                                 break;
                             case "ADMIN":
+                                // TODO: 3/25/19 Confirm whether he/she is the admin before signin
                                 startActivity(new Intent(this, AdminDashboardActivity.class));
                                 finish();
                                 break;
@@ -100,6 +100,43 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
+    private void checkStudentDetails(String userId) {
+        mStoreDb.collection("students").document(userId)
+                .get()
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    startActivity(new Intent(this, StudentDashboardActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Wait for approval / Wrong user group", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(this, "Login Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+    }
+
+    private void checkOfficerDetails(String userId) {
+        mStoreDb.collection("officers").document(userId).get()
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    startActivity(new Intent(this, OfficerDashboardActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Wait for approval / Wrong user group", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(this, "Login Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+    }
+
     @Override
     protected void onStart() {
 
@@ -110,12 +147,10 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             switch (userGroup) {
                 case "STUDENT":
-                    startActivity(new Intent(this, StudentDashboardActivity.class));
-                    finish();
+                    checkStudentDetails(user.getUid());
                     break;
                 case "OFFICER":
-                    startActivity(new Intent(this, OfficerDashboardActivity.class));
-                    finish();
+                    checkOfficerDetails(user.getUid());
                     break;
                 case "ADMIN":
                     startActivity(new Intent(this, AdminDashboardActivity.class));
