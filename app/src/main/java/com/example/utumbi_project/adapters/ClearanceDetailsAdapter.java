@@ -42,7 +42,7 @@ public class ClearanceDetailsAdapter extends BaseAdapter {
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.single_clearance_details_item, null);
         }
 
@@ -54,18 +54,18 @@ public class ClearanceDetailsAdapter extends BaseAdapter {
         deptNameTV.setText(clearanceModel.getDeptName());
         clearanceStatusTV.setText(clearanceModel.getClearanceStatus());
 
-        switch (clearanceModel.getClearanceStatus()){
+        switch (clearanceModel.getClearanceStatus()) {
             case "Cleared":
-                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark, null));
                 break;
             case "Pending":
-                clearanceStatusTV.setTextColor(context.getResources().getColor(R.color.yellow));
+                clearanceStatusTV.setTextColor(context.getResources().getColor(R.color.yellow, null));
                 break;
             case "Rejected":
-                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark, null));
                 break;
             case "Not Requested":
-                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.black));
+                clearanceStatusTV.setTextColor(context.getResources().getColor(android.R.color.black, null));
                 break;
         }
 

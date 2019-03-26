@@ -24,6 +24,7 @@ import com.example.utumbi_project.adminfragments.EditProfileFragment;
 import com.example.utumbi_project.adminfragments.HomeFragment;
 import com.example.utumbi_project.adminfragments.NotificationsFragment;
 import com.example.utumbi_project.models.AdminNotification;
+import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,39 +71,11 @@ public class AdminDashboardActivity extends AppCompatActivity
         adminHeaderProfileCIV = navHeaderView.findViewById(R.id.admin_header_civ);
         adminUsernameTV = navHeaderView.findViewById(R.id.admin_username_tv);
 
-        displayFragment(R.id.admin_nav_home);
+        displayFragment(new HomeFragment());
     }
 
-    public void displayFragment(int id) {
+    public void displayFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = null;
-
-        switch (id) {
-            case R.id.admin_nav_home:
-                getSupportActionBar().setTitle("Admin Home");
-                fragment = new HomeFragment();
-                break;
-            case R.id.admin_nav_add_student:
-                getSupportActionBar().setTitle("Add Student");
-                fragment = new AddStudentFragment();
-                break;
-            case R.id.admin_nav_add_officer:
-                getSupportActionBar().setTitle("Add Officer");
-                fragment = new AddOfficerFragment();
-                break;
-            case R.id.admin_nav_notifications:
-                getSupportActionBar().setTitle("Notifications");
-                fragment = new NotificationsFragment();
-                break;
-            case R.id.admin_nav_edit_profile:
-                getSupportActionBar().setTitle("Edit Profile");
-                fragment = new EditProfileFragment();
-                break;
-            case R.id.admin_nav_logout:
-                logout();
-                break;
-        }
-
         if (fragment != null) {
             transaction.replace(R.id.container, fragment).commit();
         }
@@ -141,7 +114,32 @@ public class AdminDashboardActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        displayFragment(item.getItemId());
+
+        switch (item.getItemId()) {
+            case R.id.admin_nav_home:
+                getSupportActionBar().setTitle("Admin Home");
+                displayFragment(new HomeFragment());
+                break;
+            case R.id.admin_nav_add_student:
+                getSupportActionBar().setTitle("Add Student");
+                displayFragment(new AddStudentFragment());
+                break;
+            case R.id.admin_nav_add_officer:
+                getSupportActionBar().setTitle("Add Officer");
+                displayFragment(new AddOfficerFragment());
+                break;
+            case R.id.admin_nav_notifications:
+                getSupportActionBar().setTitle("Notifications");
+                displayFragment(new NotificationsFragment());
+                break;
+            case R.id.admin_nav_edit_profile:
+                getSupportActionBar().setTitle("Edit Profile");
+                displayFragment(new EditProfileFragment());
+                break;
+            case R.id.admin_nav_logout:
+                logout();
+                break;
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -171,7 +169,7 @@ public class AdminDashboardActivity extends AppCompatActivity
     private void getAdminDetails(String userId) {
 
         // TODO: 3/20/19 Get user details and display them on the homepage
-        displayFragment(R.id.admin_nav_home);
+        displayFragment(new HomeFragment());
 
     }
 
@@ -187,6 +185,19 @@ public class AdminDashboardActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(AdminNotification notification) {
-        Toast.makeText(this, notification.toString(), Toast.LENGTH_SHORT).show();
+
+        if (notification.getGroup().equalsIgnoreCase("STUDENT")) {
+
+            getSupportActionBar().setTitle("Add Student");
+            displayFragment(AddStudentFragment.getInstance(notification.getUserId()));
+
+        } else if (notification.getGroup().equalsIgnoreCase("OFFICER")) {
+
+            getSupportActionBar().setTitle("Add Officer");
+            displayFragment(AddOfficerFragment.getInstance(notification.getUserId()));
+
+        } else {
+            Toast.makeText(this, "" + notification, Toast.LENGTH_SHORT).show();
+        }
     }
 }

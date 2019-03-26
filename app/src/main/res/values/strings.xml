@@ -129,7 +129,6 @@
     <string name="already_have_an_account">Already Have An Account?</string>
     <string name="change_password">Change Password</string>
     <string name="student_name">Student Name</string>
-    <string name="employee_id">Employee ID</string>
     <string name="lecturer_name">Officer Name</string>
     <string name="add_officer">Add Officer</string>
     <string name="finish_setup">Finish Setup</string>
@@ -139,5 +138,6 @@
     <string name="admin_details">Admin Details</string>
     <string name="student">Student</string>
     <string name="dummy_email">example@anyco.xyz</string>
+    <string name="officer_id">Officer ID</string>
 
 </resources>

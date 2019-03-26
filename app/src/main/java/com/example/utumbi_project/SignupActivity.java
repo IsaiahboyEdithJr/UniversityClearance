@@ -86,7 +86,8 @@ public class SignupActivity extends AppCompatActivity {
         mFirestore.collection("notifications")
                 .document("admin")
                 .collection("Notifications")
-                .add(notification)
+                .document(mAuth.getCurrentUser().getUid())
+                .set(notification)
                 .addOnCompleteListener(
                         task -> {
                             if (task.isSuccessful()) {

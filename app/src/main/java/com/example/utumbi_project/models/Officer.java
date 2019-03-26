@@ -1,9 +1,8 @@
 package com.example.utumbi_project.models;
 
-import java.io.Serializable;
+import android.support.annotation.NonNull;
 
-public class Officer implements Serializable {
-    private String empName;
+public class Officer {
     private String name;
     private String contact;
     private String profilePicName;
@@ -12,20 +11,11 @@ public class Officer implements Serializable {
     public Officer() {
     }
 
-    public Officer(String empName, String name, String contact, String profilePicName, String deptName) {
-        this.empName = empName;
+    public Officer(String name, String contact, String profilePicName, String deptName) {
         this.name = name;
         this.contact = contact;
         this.profilePicName = profilePicName;
         this.deptName = deptName;
-    }
-
-    public String getEmpName() {
-        return empName;
-    }
-
-    public void setEmpName(String empName) {
-        this.empName = empName;
     }
 
     public String getName() {
@@ -58,5 +48,11 @@ public class Officer implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

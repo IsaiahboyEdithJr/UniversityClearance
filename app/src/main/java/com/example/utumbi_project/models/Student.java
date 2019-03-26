@@ -1,8 +1,6 @@
 package com.example.utumbi_project.models;
 
-import java.io.Serializable;
-
-public class Student implements Serializable {
+public class Student {
 
     private String name;
     private String regNo;
