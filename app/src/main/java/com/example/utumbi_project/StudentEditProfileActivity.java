@@ -1,9 +1,9 @@
 package com.example.utumbi_project;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -21,12 +21,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,17 +36,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 public class StudentEditProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //Activity widgets
     private ImageView avatarIV;
     private TextInputEditText nameTIET, phoneTIET;
-    private Spinner courseSpinner, programSpinner, facultySpinner, campusSpinner;
-    private ProgressBar uploadAvatarPB;
+    private TextView regnoTV;
 
-    private Uri imageUri;
+    private Bitmap avatarBitmap = null;
 
     private static final int IMAGE_REQUEST_CODE = 999;
+    private static final int CROP_IMAGE_REQUEST_CODE = 998;
 
     //Firebase Variables
     private FirebaseAuth mAuth;
@@ -60,6 +59,7 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
     private ImageView navHeaderIV;
     private TextView navHeaderNameTV, navHeaderRegNoTV;
 
+    private Student mStudent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,19 +94,13 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
         View navHeaderView = navigation.getHeaderView(0);
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
 
-        navHeaderNameTV = navHeaderView.findViewById(R.id.navheaderStudentName);
+        navHeaderNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
         navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
-
-        //Initializing the layout widget
-        courseSpinner = findViewById(R.id.course_spinner);
-        facultySpinner = findViewById(R.id.faculty_spinner);
-        campusSpinner = findViewById(R.id.campus_spinner);
-        programSpinner = findViewById(R.id.program_spinner);
-        uploadAvatarPB = findViewById(R.id.ep_upload_avatar_pb);
-        initSpinners();
 
         nameTIET = findViewById(R.id.ep_name_tiet);
         phoneTIET = findViewById(R.id.ep_phone_tiet);
+
+        regnoTV = findViewById(R.id.regno_tv);
 
         avatarIV = findViewById(R.id.ep_avatar_iv);
         avatarIV.setOnClickListener(view -> ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, IMAGE_REQUEST_CODE));
@@ -118,79 +112,55 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
     private void upload() {
 
-        if (imageUri != null) {
-            String userUid = mAuth.getCurrentUser().getUid();
-            StorageReference fileRef = mStorageRef.child(userUid + '.' + getFileExtension(imageUri));
+        String name = nameTIET.getText().toString();
+        String contact = phoneTIET.getText().toString();
 
-            uploadAvatarPB.setVisibility(View.VISIBLE);
-            UploadTask uploadImageTask = fileRef.putFile(imageUri);
+        if (avatarBitmap != null) {
+
+            StorageReference fileRef = mStorageRef.child(mAuth.getCurrentUser().getUid() + ".jpg");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadImageTask = fileRef.putBytes(data);
+
+            mStudent.setImageUrl(mAuth.getCurrentUser().getUid() + ".jpg");
+
 
             uploadImageTask.addOnSuccessListener(
                     taskSnapshot -> {
 
-                        //Add a student Map in a firestore collection
-                        String name = nameTIET.getText().toString();
-                        String contact = phoneTIET.getText().toString();
-                        String imageUrl = taskSnapshot.getMetadata().getName();
-                        String program = programSpinner.getSelectedItem().toString();
-                        String course = courseSpinner.getSelectedItem().toString();
-                        String campus = campusSpinner.getSelectedItem().toString();
-                        String faculty = facultySpinner.getSelectedItem().toString();
-
-                        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(contact)) {
-
-                            Student student = new Student(null, name, contact, imageUrl, course, faculty, campus, program);
-
-                            mFirestore.collection("students")
-                                    .document(userUid)
-                                    .set(student)
-                                    .addOnCompleteListener(
-                                            task -> {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(this, "Your profile has been updated", Toast.LENGTH_SHORT).show();
-                                                    startActivity(new Intent(this, StudentDashboardActivity.class));
-                                                    finish();
-                                                } else {
-                                                    Toast.makeText(this, "An error occurred: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                    );
-                        } else {
-                            Toast.makeText(this, "Fill in all the fields", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show();
                     }
-            ).addOnFailureListener(
-                    taskSnapshot -> Toast.makeText(this, "An error occured: " + taskSnapshot.getLocalizedMessage(), Toast.LENGTH_SHORT).show()
-            ).addOnProgressListener(
-                    taskSnapshot -> {
-                        uploadAvatarPB = findViewById(R.id.ep_upload_avatar_pb);
-                        double progress = 100 * (taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        uploadAvatarPB.setProgress((int) progress);
-                    }
-            );
+            ).addOnFailureListener(taskSnapshot -> Toast.makeText(this, "An error occured: " + taskSnapshot.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-            uploadAvatarPB.setVisibility(View.GONE);
-        } else {
-            Toast.makeText(this, "Choose a image file to upload to profile", Toast.LENGTH_SHORT).show();
         }
-    }
 
-    private void initSpinners() {
-        String[] courses = getResources().getStringArray(R.array.courses);
-        ArrayAdapter courseAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, courses);
-        courseSpinner.setAdapter(courseAdapter);
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(contact)) {
 
-        String[] campus = getResources().getStringArray(R.array.campus);
-        ArrayAdapter campusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, campus);
-        campusSpinner.setAdapter(campusAdapter);
+            mStudent.setName(name);
+            mStudent.setContact(contact);
 
-        String[] program = getResources().getStringArray(R.array.program);
-        ArrayAdapter programAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, program);
-        programSpinner.setAdapter(programAdapter);
-
-        String[] faculty = getResources().getStringArray(R.array.faculty);
-        ArrayAdapter facultyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, faculty);
-        facultySpinner.setAdapter(facultyAdapter);
+            mFirestore.collection("students")
+                    .document(mAuth.getCurrentUser().getUid())
+                    .set(mStudent)
+                    .addOnCompleteListener(
+                            task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(this, "Your profile has been updated", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(this, StudentDashboardActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "An error occurred: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+        } else {
+            Toast.makeText(this, "Name and the contact fields are required", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Handle officer_bottom_navigation view item clicks here
@@ -262,6 +232,8 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
 
                                     Student student = snapshot.toObject(Student.class);
 
+                                    mStudent = student;
+
                                     populateDetails(student);
 
                                 } else {
@@ -276,53 +248,98 @@ public class StudentEditProfileActivity extends AppCompatActivity implements Nav
     }
 
     private void populateDetails(Student student) {
+
+        regnoTV.setText(student.getRegNo());
         nameTIET.setText(student.getName());
         phoneTIET.setText(student.getContact());
 
         navHeaderNameTV.setText(student.getName());
         navHeaderRegNoTV.setText(student.getRegNo());
 
-        StorageReference fileRef = mStorageRef.child(student.getImageUrl());
+        if (student.getImageUrl() != null) {
 
-        final long MB = 1024 * 1024;
-        fileRef.getBytes(MB)
-                .addOnSuccessListener(
-                        bytes -> {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            navHeaderIV.setImageBitmap(bitmap);
-                        }
-                ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+            StorageReference fileRef = mStorageRef.child(student.getImageUrl());
+
+            final long MB = 1024 * 1024;
+            fileRef.getBytes(MB)
+                    .addOnSuccessListener(
+                            bytes -> {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                navHeaderIV.setImageBitmap(bitmap);
+                                avatarIV.setImageBitmap(bitmap);
+                            }
+                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        }
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver resolver = getContentResolver();
-        MimeTypeMap mt = MimeTypeMap.getSingleton();
-
-        return mt.getExtensionFromMimeType(resolver.getType(uri));
+    private void openChooseImageActivity() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_REQUEST_CODE);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == IMAGE_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, IMAGE_REQUEST_CODE);
-            } else {
-                Toast.makeText(this, "Sorry But the permissions are not granted", Toast.LENGTH_SHORT).show();
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            switch (requestCode) {
+                case IMAGE_REQUEST_CODE:
+                    openChooseImageActivity();
+                    break;
+                default:
+                    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        } else {
+            Toast.makeText(this, "Sorry But the permissions are not granted", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode == IMAGE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                imageUri = data.getData();
-                avatarIV.setImageURI(imageUri);
+        if (resultCode == RESULT_OK && data != null) {
+
+            switch (requestCode) {
+                case IMAGE_REQUEST_CODE:
+                    openCroppingActivity(data.getData());
+                    break;
+                case CROP_IMAGE_REQUEST_CODE:
+                    populateTheImageView(data);
+                    break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
             }
         }
+    }
+
+    private void populateTheImageView(Intent data) {
+
+        Bundle bundle = data.getExtras();
+        avatarBitmap = bundle.getParcelable("data");
+        avatarIV.setImageBitmap(avatarBitmap);
+
+    }
+
+    private void openCroppingActivity(Uri uri) {
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("outputX", 128);
+        intent.putExtra("outputY", 128);
+        intent.putExtra("aspectX", 128);
+        intent.putExtra("aspectY", 128);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", true);
+
+        PackageManager packageManager = getPackageManager();
+
+        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+
+        if (activities.size() > 0) startActivityForResult(intent, CROP_IMAGE_REQUEST_CODE);
+        else Toast.makeText(this, "Install a cropping application", Toast.LENGTH_SHORT).show();
     }
 }

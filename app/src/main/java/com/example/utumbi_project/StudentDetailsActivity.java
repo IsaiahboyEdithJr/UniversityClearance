@@ -70,7 +70,7 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
         View navHeaderView = navigation.getHeaderView(0);
 
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
-        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
         navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
         initTextViews();
 
@@ -78,13 +78,16 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
 
     private void populateTextViews() {
         if (mAuth.getCurrentUser() != null) {
+
             DocumentReference studRef = mFireStoreDb.collection("students").document(mAuth.getCurrentUser().getUid());
 
             studRef.get().addOnCompleteListener(
                     task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
+
                             if (document.exists()) {
+
                                 Student student = document.toObject(Student.class);
 
                                 nameTV.setText(student.getName());
@@ -109,19 +112,23 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
     }
 
     private void updateNavHeaderLayout(Student student) {
-        StorageReference fileRef = mStore.child(student.getImageUrl());
+
         navHeaderStudentNameTV.setText(student.getName());
         navHeaderRegNoTV.setText(student.getRegNo());
 
-        final long MB = 1024 * 1024;
-        fileRef.getBytes(MB)
-                .addOnSuccessListener(
-                        bytes -> {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            navHeaderIV.setImageBitmap(bitmap);
-                        }
-                ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        if (student.getImageUrl() != null) {
 
+            StorageReference fileRef = mStore.child(student.getImageUrl());
+
+            final long MB = 1024 * 1024;
+            fileRef.getBytes(MB)
+                    .addOnSuccessListener(
+                            bytes -> {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                navHeaderIV.setImageBitmap(bitmap);
+                            }
+                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        }
     }
 
     private void initTextViews() {
@@ -186,6 +193,7 @@ public class StudentDetailsActivity extends AppCompatActivity implements Navigat
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             startActivity(new Intent(this, LoginRouterActivity.class));
+            finish();
         } else {
             populateTextViews();
         }

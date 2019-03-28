@@ -1,5 +1,6 @@
 package com.example.utumbi_project;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,6 +48,9 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     private ListView clearanceDetailsLV;
     private TextView studentGlobalClearingStatusTV;
 
+    //ProgressDialog
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +64,10 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setTitle("Home");
+
+        //Init ProgressDialog
+        progressDialog = new ProgressDialog(this);
 
         //Adding the drawer toggle icon in the toolbar
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -79,27 +85,45 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
         View navHeaderView = navigation.getHeaderView(0);
 
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
-        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
         navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
 
         //Init the clearanceDetaisLV;
         clearanceDetailsLV = findViewById(R.id.clearance_details_lv);
         studentGlobalClearingStatusTV = findViewById(R.id.stud_general_clearance_status_tv);
 
-        populateTheLV();
+        initListView();
+    }
 
+    private void initListView() {
+
+        String[] depts = getResources().getStringArray(R.array.departments);
+
+        List<ClearanceModel> clearanceModels = new ArrayList<>();
+
+        for (int i = 0; i < depts.length; i++) {
+            clearanceModels.add(new ClearanceModel(depts[i], "Not Requested"));
+        }
+        ClearanceDetailsAdapter adapter = new ClearanceDetailsAdapter(this, clearanceModels);
+
+        clearanceDetailsLV.setAdapter(adapter);
     }
 
     //Just for testing but this stuff should be pulled from cloud firestore
     private void populateTheLV() {
 
+        progressDialog.setTitle("Sending Requests");
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.show();
+
         String[] depts = getResources().getStringArray(R.array.departments);
-        String[] possibleStatuses = getResources().getStringArray(R.array.clearance_status);
+//        String[] possibleStatuses = getResources().getStringArray(R.array.clearance_status);
 
         List<ClearanceModel> clearanceModels = new ArrayList<>();
 
         for (int i = 0; i < depts.length; i++) {
-            clearanceModels.add(new ClearanceModel(depts[i], possibleStatuses[(int) Math.floor(Math.random() * 4)]));
+            clearanceModels.add(new ClearanceModel(depts[i], "Pending"));
         }
 
         ClearanceDetailsAdapter adapter = new ClearanceDetailsAdapter(this, clearanceModels);
@@ -175,6 +199,8 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
 
         String[] depts = getResources().getStringArray(R.array.departments);
 
+        populateTheLV();
+
         // TODO: 3/19/19 Initialize students collection for clearance information for every dept
 
         // TODO: 3/19/19  Send notifications to the relevant officers
@@ -222,21 +248,23 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     }
 
     private void updateNavHeaderLayout(Student student) {
-        StorageReference fileRef = mStore.child(student.getImageUrl());
+
 
         navHeaderStudentNameTV.setText(student.getName());
         navHeaderRegNoTV.setText(student.getRegNo());
 
-        final long MB = 1024 * 1024;
-        fileRef.getBytes(MB)
-                .addOnSuccessListener(
-                        bytes -> {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            navHeaderIV.setImageBitmap(bitmap);
-                        }
-                ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        if (student.getImageUrl() != null) {
+            StorageReference fileRef = mStore.child(student.getImageUrl());
+            final long MB = 1024 * 1024;
+            fileRef.getBytes(MB)
+                    .addOnSuccessListener(
+                            bytes -> {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                navHeaderIV.setImageBitmap(bitmap);
+                            }
+                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
-
+        }
     }
 
 

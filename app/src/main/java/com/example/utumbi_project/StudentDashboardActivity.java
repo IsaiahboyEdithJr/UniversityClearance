@@ -69,7 +69,7 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
 
         //Getting the widgets in the navigation header
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
-        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
         navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
 
     }
@@ -141,15 +141,12 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
                                 DocumentSnapshot snapshot = task.getResult();
 
                                 if (snapshot.exists()) {
-
                                     Student student = snapshot.toObject(Student.class);
-
                                     updateNavHeaderLayout(student);
 
                                 } else {
                                     Toast.makeText(this, "User hasn't profle yet", Toast.LENGTH_SHORT).show();
                                 }
-
                             } else {
                                 Toast.makeText(this, "Getting user data: " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             }
@@ -158,19 +155,21 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
     }
 
     private void updateNavHeaderLayout(Student student) {
-        StorageReference fileRef = mStore.child(student.getImageUrl());
-
         navHeaderStudentNameTV.setText(student.getName());
         navHeaderRegNoTV.setText(student.getRegNo());
 
-        final long MB = 1024 * 1024;
-        fileRef.getBytes(MB)
-                .addOnSuccessListener(
-                        bytes -> {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            navHeaderIV.setImageBitmap(bitmap);
-                        }
-                ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        if (student.getImageUrl() != null) {
+
+            StorageReference fileRef = mStore.child(student.getImageUrl());
+            final long MB = 1024 * 1024;
+            fileRef.getBytes(MB)
+                    .addOnSuccessListener(
+                            bytes -> {
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                navHeaderIV.setImageBitmap(bitmap);
+                            }
+                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+        }
 
     }
 

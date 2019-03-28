@@ -30,10 +30,23 @@
             android:orientation="vertical"
             android:padding="8dp">
 
+            <TextView
+                android:id="@+id/regno_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mag_8dp"
+                android:layout_marginBottom="@dimen/mag_8dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/mag_8dp"
+                android:text="@string/reg_no_hint"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white" />
+
             <ImageView
                 android:id="@+id/ep_avatar_iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/user_avatar_desc"
                 android:src="@mipmap/phavatar" />
@@ -70,39 +83,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:inputType="phone"
                     android:hint="@string/phone_et_hint"
+                    android:inputType="phone"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/course_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/add_student_widgets_mag_top"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                android:id="@+id/campus_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/add_student_widgets_mag_top"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                android:id="@+id/program_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/add_student_widgets_mag_top"
-                android:padding="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                android:id="@+id/faculty_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/add_student_widgets_mag_top"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
                 android:id="@+id/ep_submit"

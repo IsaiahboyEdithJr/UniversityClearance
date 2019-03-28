@@ -13,7 +13,7 @@
     <string name="login_btn_text">Login</string>
     <string name="remember_me_text">Remember me</string>
     <string name="pwd_hint">password</string>
-    <string name="reg_no_hint">School Email Address</string>
+    <string name="reg_no_hint">Registration Number</string>
     <string name="add_student_btn_text">Add Student</string>
 
     <!--Spinner Items-->
