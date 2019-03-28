@@ -105,9 +105,6 @@ public class AddStudentFragment extends Fragment {
                             }
                     );
 
-            ((AdminDashboardActivity) getActivity()).getSupportActionBar().setTitle("Notifications");
-            ((AdminDashboardActivity) getActivity()).displayFragment(new NotificationsFragment());
-
         } else {
             Toast.makeText(getActivity(), "Fill in all the fields", Toast.LENGTH_SHORT).show();
         }

@@ -91,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(
                         task -> {
                             if (task.isSuccessful()) {
-                                Toast.makeText(this, "Your request has been sent wait for approval", Toast.LENGTH_LONG).show();
+                                Toast.makeText(this, "Your request has been sent. Wait for approval", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(this, "An error occurred: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }

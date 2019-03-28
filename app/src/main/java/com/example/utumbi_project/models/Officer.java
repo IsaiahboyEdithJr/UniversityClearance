@@ -53,6 +53,6 @@ public class Officer {
     @NonNull
     @Override
     public String toString() {
-        return super.toString();
+        return "Officer " + getName();
     }
 }

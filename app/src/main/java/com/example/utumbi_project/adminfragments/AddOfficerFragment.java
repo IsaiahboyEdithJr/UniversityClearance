@@ -122,9 +122,6 @@ public class AddOfficerFragment extends Fragment {
                         }
                 );
 
-        ((AdminDashboardActivity) getActivity()).getSupportActionBar().setTitle("Notifications");
-        ((AdminDashboardActivity) getActivity()).displayFragment(new NotificationsFragment());
-
     }
 
     private void populateSpinners() {
