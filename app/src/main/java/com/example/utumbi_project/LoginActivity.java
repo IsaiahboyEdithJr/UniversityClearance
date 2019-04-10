@@ -1,5 +1,6 @@
 package com.example.utumbi_project;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String userGroup = "";
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         emailET = findViewById(R.id.login_email_tiet);
         pwdET = findViewById(R.id.login_pwd_tiet);
         loginPB = findViewById(R.id.login_pb);
+
+        progressDialog = new ProgressDialog(this);
 
         loginBtn.setOnClickListener(
                 view -> {
@@ -84,9 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                                 checkOfficerDetails(mAuth.getCurrentUser().getUid());
                                 break;
                             case "ADMIN":
-                                // TODO: 3/25/19 Confirm whether he/she is the admin before signin
-                                startActivity(new Intent(this, AdminDashboardActivity.class));
-                                finish();
+                                confirmAdmin(mAuth.getCurrentUser().getUid());
                                 break;
                         }
 
@@ -100,6 +103,29 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
+    private void confirmAdmin(String uid) {
+
+        mStoreDb.collection("admin").document(uid)
+                .get()
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    startActivity(new Intent(this, AdminDashboardActivity.class));
+                                } else {
+                                    Toast.makeText(this, "You are not the administrator", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+
+        loginPB.setVisibility(View.GONE);
+
+
+    }
+
     private void checkStudentDetails(String userId) {
         mStoreDb.collection("students").document(userId)
                 .get()
@@ -108,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 if (task.getResult().exists()) {
                                     startActivity(new Intent(this, StudentDashboardActivity.class));
-                                    finish();
                                 } else {
                                     Toast.makeText(this, "Wait for approval / Wrong user group", Toast.LENGTH_SHORT).show();
                                 }
@@ -117,6 +142,8 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                 );
+        loginPB.setVisibility(View.GONE);
+
     }
 
     private void checkOfficerDetails(String userId) {
@@ -126,7 +153,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 if (task.getResult().exists()) {
                                     startActivity(new Intent(this, OfficerDashboardActivity.class));
-                                    finish();
                                 } else {
                                     Toast.makeText(this, "Wait for approval / Wrong user group", Toast.LENGTH_SHORT).show();
                                 }
@@ -135,6 +161,9 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                 );
+
+        loginPB.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -145,6 +174,9 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
+
+            loginPB.setVisibility(View.VISIBLE);
+
             switch (userGroup) {
                 case "STUDENT":
                     checkStudentDetails(user.getUid());
@@ -153,10 +185,10 @@ public class LoginActivity extends AppCompatActivity {
                     checkOfficerDetails(user.getUid());
                     break;
                 case "ADMIN":
-                    startActivity(new Intent(this, AdminDashboardActivity.class));
-                    finish();
+                    confirmAdmin(user.getUid());
                     break;
             }
+
         }
     }
 }

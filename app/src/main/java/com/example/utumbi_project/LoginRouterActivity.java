@@ -48,6 +48,5 @@ public class LoginRouterActivity extends AppCompatActivity implements Button.OnC
         }
 
         startActivity(intent);
-        finish();
     }
 }

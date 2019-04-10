@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OfficerDashboardActivity"
-            android:label="@string/title_activity_officer_dashboard" />
+            android:label="@string/title_activity_officer_dashboard"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginRouterActivity" />
         <activity
             android:name=".StudentDashboardActivity"

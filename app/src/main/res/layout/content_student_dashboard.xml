@@ -12,10 +12,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="@string/web_dev"
         android:layout_marginTop="8dp"
-        android:scaleType="center"
-        android:src="@mipmap/web_developer" />
+        android:contentDescription="@string/web_dev"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/clear" />
 
     <GridLayout
         android:layout_width="match_parent"
@@ -55,8 +55,8 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:contentDescription="@string/dev"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/dev"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/developer" />
 

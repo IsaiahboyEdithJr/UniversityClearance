@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,16 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.utumbi_project.adapters.ClearanceDetailsAdapter;
+import com.example.utumbi_project.adapters.ClearanceRVAdapter;
 import com.example.utumbi_project.models.ClearanceModel;
 import com.example.utumbi_project.models.Officer;
 import com.example.utumbi_project.models.OfficerNotification;
@@ -50,7 +51,7 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     private TextView navHeaderStudentNameTV;
     private TextView navHeaderRegNoTV;
 
-    private ListView clearanceDetailsLV;
+    private RecyclerView clearanceDetailsLV;
     private TextView studentGlobalClearingStatusTV;
 
     //ProgressDialog
@@ -110,12 +111,11 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
             clearanceModels.add(new ClearanceModel(depts[i], "Not Requested"));
         }
 
-        ClearanceDetailsAdapter adapter = new ClearanceDetailsAdapter(this, clearanceModels);
+        ClearanceRVAdapter adapter = new ClearanceRVAdapter(this, clearanceModels);
 
         clearanceDetailsLV.setAdapter(adapter);
     }
 
-    //Just for testing but this stuff should be pulled from cloud firestore
     private void populateTheLV() {
 
         progressDialog.setTitle("Checking Requests");
@@ -129,40 +129,96 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
         List<ClearanceModel> clearanceModels = new ArrayList<>();
 
         //Get clearance Map for the current student
-        mFireStoreDb.collection("studentsclearance")
-                .document(mAuth.getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(
 
-                        task -> {
-                            if (task.isSuccessful()) {
+        if (mAuth.getCurrentUser() != null) {
 
-                                if (task.getResult().exists()) {
+            mFireStoreDb.collection("studentsclearance")
+                    .document(mAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(
 
-                                    Map<String, Object> clearanceMap = task.getResult().getData();
+                            task -> {
+                                if (task.isSuccessful()) {
 
-                                    for (int i = 0; i < depts.length; i++) {
+                                    if (task.getResult().exists()) {
 
-                                        clearanceModels.add(new ClearanceModel(depts[i], clearanceMap.get(depts[i]).toString()));
+                                        Map<String, Object> clearanceMap = task.getResult().getData();
+
+                                        for (int i = 0; i < depts.length; i++) {
+
+                                            clearanceModels.add(new ClearanceModel(depts[i], clearanceMap.get(depts[i]).toString()));
+                                        }
+
+                                        ClearanceRVAdapter adapter = new ClearanceRVAdapter(this, clearanceModels);
+                                        clearanceDetailsLV.setAdapter(adapter);
+
+
+                                    } else {
+                                        Toast.makeText(this, "Clearance not requested", Toast.LENGTH_SHORT).show();
                                     }
 
-                                    ClearanceDetailsAdapter adapter = new ClearanceDetailsAdapter(this, clearanceModels);
-                                    clearanceDetailsLV.setAdapter(adapter);
-
-
                                 } else {
-                                    Toast.makeText(this, "Clearance not requested", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Error checking request status " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
 
-                            } else {
-                                Toast.makeText(this, "Error checking request status " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+
                             }
+                    );
 
-                            progressDialog.dismiss();
+        }
 
+        // Check departments that have an officer registered
+
+        ArrayList<String> registerDepts = new ArrayList<>();
+
+        mFireStoreDb.collection("officers")
+                .get()
+                .addOnSuccessListener(
+                        queryDocumentSnapshots -> {
+                            if (queryDocumentSnapshots.isEmpty()) {
+                                Toast.makeText(this, "No officer registered for any department", Toast.LENGTH_SHORT).show();
+                            } else {
+                                for (DocumentSnapshot ds : queryDocumentSnapshots.getDocuments()) {
+                                    registerDepts.add((String) ds.get("deptName"));
+                                }
+                            }
                         }
-                );
+                )
+                .addOnFailureListener(e -> {
+                });
 
+        // Global TextView
+
+        if (mAuth.getCurrentUser() != null) {
+
+            mFireStoreDb.collection("studentsclearance")
+                    .document(mAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(
+                            task -> {
+
+                                if (task.isSuccessful()) {
+
+                                    DocumentSnapshot doc = task.getResult();
+
+                                    if (doc.exists()) {
+                                        for (String dept : depts) {
+                                            if (doc.getString(dept) != "Cleared") {
+                                                studentGlobalClearingStatusTV.setText("Student Not Cleared");
+                                                return;
+                                            }
+                                        }
+
+                                        studentGlobalClearingStatusTV.setText("Student Cleared");
+                                        studentGlobalClearingStatusTV.setBackgroundColor(Color.GREEN);
+                                    }
+
+                                }
+
+                            }
+                    );
+        }
 
     }
 
@@ -229,28 +285,31 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
             progressDialog.setCanceledOnTouchOutside(true);
             progressDialog.show();
 
-            //Check whether the Map is already initialized before overwriting the exisiting on
-            mFireStoreDb.collection("studentsclearance")
-                    .document(mAuth.getCurrentUser().getUid())
-                    .get()
-                    .addOnCompleteListener(
+            if (mAuth.getCurrentUser() != null) {
 
-                            task -> {
-                                if (task.isSuccessful()) {
+                //Check whether the Map is already initialized before overwriting the exisiting on
+                mFireStoreDb.collection("studentsclearance")
+                        .document(mAuth.getCurrentUser().getUid())
+                        .get()
+                        .addOnCompleteListener(
 
-                                    if (!task.getResult().exists()) {
-                                        requestToBeCleared();
+                                task -> {
+                                    if (task.isSuccessful()) {
+
+                                        if (!task.getResult().exists()) {
+                                            requestToBeCleared();
+                                        } else {
+                                            Toast.makeText(this, "Clearance already requested", Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                        }
+
                                     } else {
-                                        Toast.makeText(this, "Clearance already requested", Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
+                                        Toast.makeText(this, "Error checking request status " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                     }
 
-                                } else {
-                                    Toast.makeText(this, "Error checking request status " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
-
-                            }
-                    );
+                        );
+            }
             return true;
         }
 
@@ -274,8 +333,6 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
                 .set(clearanceMap)
                 .addOnSuccessListener(
                         aVoid -> {
-                            Toast.makeText(this, "Student clearance map initialized", Toast.LENGTH_SHORT).show();
-
                             checkAvailableOfficersAndSendNotification();
                         }
                 )
@@ -302,13 +359,11 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
                                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                                         Officer officer = document.toObject(Officer.class);
-                                        Toast.makeText(this, "try to send request to " + officer, Toast.LENGTH_SHORT).show();
 
                                         for (String dept : depts) {
 
                                             if (officer.getDeptName().equalsIgnoreCase(dept)) {
 
-                                                Toast.makeText(this, "Sending notification to " + officer + "...", Toast.LENGTH_SHORT).show();
 
                                                 OfficerNotification notification = new OfficerNotification(mAuth.getCurrentUser().getUid(), dept, mAuth.getCurrentUser().getEmail(), "Clearance");
 

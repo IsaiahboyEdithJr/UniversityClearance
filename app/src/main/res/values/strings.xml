@@ -100,7 +100,7 @@
     <string name="status">Status</string>
     <string name="not_cleared">Not Cleared</string>
     <string name="student_details">Student Details</string>
-    <string name="edit_details">Edit Details</string>
+    <string name="edit_profile_text">Edit Profile</string>
     <string name="logout">Logout</string>
     <string name="details_name_tv_text">Name:</string>
     <string name="det_studs_name_tv_text">Students\'s Name</string>
@@ -129,7 +129,7 @@
     <string name="already_have_an_account">Already Have An Account?</string>
     <string name="change_password">Change Password</string>
     <string name="student_name">Student Name</string>
-    <string name="lecturer_name">Officer Name</string>
+    <string name="officer_name">Officer Name</string>
     <string name="add_officer">Add Officer</string>
     <string name="finish_setup">Finish Setup</string>
     <string name="administratir_name">Administratir Name</string>
@@ -139,5 +139,8 @@
     <string name="student">Student</string>
     <string name="dummy_email">example@anyco.xyz</string>
     <string name="officer_id">Officer ID</string>
+    <string name="request">Request</string>
+    <string name="contact">Contact</string>
+    <string name="print_certificate">Print Certificate</string>
 
 </resources>

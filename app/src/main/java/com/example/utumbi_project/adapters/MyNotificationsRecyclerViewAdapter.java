@@ -63,7 +63,7 @@ public class MyNotificationsRecyclerViewAdapter extends RecyclerView.Adapter<MyN
             super(view);
 
             mView = view;
-            mIdView = view.findViewById(R.id.user_group_tv);
+            mIdView = view.findViewById(R.id.request_tv);
             mContentView = view.findViewById(R.id.user_email_tv);
         }
 

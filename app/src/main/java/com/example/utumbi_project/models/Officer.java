@@ -2,7 +2,9 @@ package com.example.utumbi_project.models;
 
 import android.support.annotation.NonNull;
 
-public class Officer {
+import java.io.Serializable;
+
+public class Officer implements Serializable {
     private String name;
     private String contact;
     private String profilePicName;

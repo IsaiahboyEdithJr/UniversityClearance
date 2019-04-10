@@ -31,7 +31,7 @@
             android:layout_marginTop="@dimen/add_student_widgets_mag_top"
             android:backgroundTint="@android:color/white"
             android:gravity="center_horizontal"
-            android:hint="@string/lecturer_name"
+            android:hint="@string/officer_name"
             android:inputType="textPersonName"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"

@@ -56,7 +56,7 @@
         android:layout_width="@dimen/widget_width"
         android:layout_height="wrap_content"
         android:background="@drawable/round_corner_btn"
-        android:text="@string/edit_details"
+        android:text="@string/edit_profile_text"
         android:textColor="@android:color/white" />
 
 </LinearLayout>
