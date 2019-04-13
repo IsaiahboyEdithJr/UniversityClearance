@@ -1,6 +1,12 @@
 package com.example.utumbi_project.models;
 
+import com.google.firebase.firestore.Exclude;
+
 public class Student {
+
+    @Exclude
+    private String uid;
+
 
     private String name;
     private String regNo;
@@ -10,6 +16,7 @@ public class Student {
     private String faculty;
     private String campus;
     private String program;
+    private boolean cleared;
 
     public Student() {
     }
@@ -87,5 +94,21 @@ public class Student {
 
     public void setRegNo(String regNo) {
         this.regNo = regNo;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public boolean isCleared() {
+        return cleared;
+    }
+
+    public void setCleared(boolean cleared) {
+        this.cleared = cleared;
     }
 }

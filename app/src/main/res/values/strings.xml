@@ -13,7 +13,7 @@
     <string name="login_btn_text">Login</string>
     <string name="remember_me_text">Remember me</string>
     <string name="pwd_hint">password</string>
-    <string name="reg_no_hint">Registration Number</string>
+    <string name="reg_no_hint">Reg No</string>
     <string name="add_student_btn_text">Add Student</string>
 
     <!--Spinner Items-->
@@ -59,7 +59,7 @@
         <item>Hostels</item>
         <item>Medical</item>
         <item>Catering</item>
-        <item>Game/Sports</item>
+        <item>Game and Sports</item>
         <item>Security Department</item>
     </string-array>
 
@@ -109,7 +109,8 @@
     <string name="det_stud_reg_no_tv_text">Reg/No:</string>
     <string name="det_stud_reg_no">IN13/20412/15</string>
     <string name="det_stud_faculty_tv_text">Faculty:</string>
-    <string name="stud_faculty">Information Sience And Tech</string>
+    <string name="stud_faculty">Faculty</string>
+    <string name="faculty_name">Faculty Name...</string>
     <string name="det_stud_course_tv_text">Course:</string>
     <string name="studs_course">Computer Science</string>
     <string name="det_stud_program_tv_text">Program:</string>
@@ -129,6 +130,7 @@
     <string name="already_have_an_account">Already Have An Account?</string>
     <string name="change_password">Change Password</string>
     <string name="student_name">Student Name</string>
+    <string name="name">Name</string>
     <string name="officer_name">Officer Name</string>
     <string name="add_officer">Add Officer</string>
     <string name="finish_setup">Finish Setup</string>
@@ -142,5 +144,26 @@
     <string name="request">Request</string>
     <string name="contact">Contact</string>
     <string name="print_certificate">Print Certificate</string>
+    <string name="graduaation_list">Graduaation List</string>
+    <string name="deadline">Deadline</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="course">Course</string>
+    <string name="course_name">Course Name...</string>
+    <string name="kisii_university">Kisii University</string>
+    <string name="address">PO POX 408 - 40200 KISII, Kenya</string>
+    <string name="school_contact">+254-058-30826</string>
+    <string name="school_email">Email: info@kisiiuniversity.ac.ke</string>
+    <string name="certificate_title">Fourth Year Clearance Certificate</string>
+    <string name="re">RE: TO WHOM IT MAY CONCERN</string>
+    <string name="body">This is to certify that the above student has successfully cleared with all the departments and units in Kisii university hence he/she has no accountability. Kindly help him/her where necessary</string>
+    <string name="thanks">Thanks</string>
+    <string name="official_stamp">Official Stamp...</string>
+    <string name="accounts">Accounts</string>
+    <string name="filter_by_faculty">Filter By Faculty</string>
+    <string name="reg_no">Reg No</string>
+    <string name="choose_date">Choose Date</string>
+    <string name="set_deadline">Set Deadline</string>
 
 </resources>

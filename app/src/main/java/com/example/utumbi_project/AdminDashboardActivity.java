@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.example.utumbi_project.adminfragments.AddOfficerFragment;
 import com.example.utumbi_project.adminfragments.AddStudentFragment;
 import com.example.utumbi_project.adminfragments.EditProfileFragment;
+import com.example.utumbi_project.adminfragments.FilterFacultyFragment;
+import com.example.utumbi_project.adminfragments.GraduationListFragment;
 import com.example.utumbi_project.adminfragments.HomeFragment;
 import com.example.utumbi_project.adminfragments.NotificationsFragment;
+import com.example.utumbi_project.adminfragments.SetDeadlineFragment;
 import com.example.utumbi_project.models.AdminNotification;
 import com.example.utumbi_project.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
@@ -131,6 +134,18 @@ public class AdminDashboardActivity extends AppCompatActivity
             case R.id.admin_nav_notifications:
                 getSupportActionBar().setTitle("Notifications");
                 displayFragment(new NotificationsFragment());
+                break;
+            case R.id.admin_nav_list:
+                getSupportActionBar().setTitle("Graduation List");
+                displayFragment(new GraduationListFragment());
+                break;
+            case R.id.admin_nav_faculty:
+                getSupportActionBar().setTitle(R.string.filter_by_faculty);
+                displayFragment(new FilterFacultyFragment());
+                break;
+            case R.id.admin_nav_deadline:
+                getSupportActionBar().setTitle("Set Deadline");
+                displayFragment(new SetDeadlineFragment());
                 break;
             case R.id.admin_nav_edit_profile:
                 getSupportActionBar().setTitle("Edit Profile");

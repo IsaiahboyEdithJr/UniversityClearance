@@ -6,4 +6,5 @@
     <color name="whiteTransparent">#80ffffff</color>
     <color name="yellow">#FFEB3B</color>
     <color name="eggShell">#F6C487</color>
+    <color name="coolGray">#f4f4f4</color>
 </resources>

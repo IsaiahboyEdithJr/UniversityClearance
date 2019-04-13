@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,8 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
     //ProgressDialog
     private ProgressDialog progressDialog;
 
+    private Button printCertBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,9 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
         navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
         navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+
+        printCertBtn = findViewById(R.id.print_cert_btn);
+        printCertBtn.setOnClickListener(view -> startActivity(new Intent(this, ClearanceCertificateActivity.class)));
 
         //Init the clearanceDetaisLV;
         clearanceDetailsLV = findViewById(R.id.clearance_details_lv);
@@ -192,7 +198,7 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
 
         if (mAuth.getCurrentUser() != null) {
 
-            mFireStoreDb.collection("studentsclearance")
+            mFireStoreDb.collection("students")
                     .document(mAuth.getCurrentUser().getUid())
                     .get()
                     .addOnCompleteListener(
@@ -203,15 +209,20 @@ public class StudentHomeActivity extends AppCompatActivity implements Navigation
                                     DocumentSnapshot doc = task.getResult();
 
                                     if (doc.exists()) {
-                                        for (String dept : depts) {
-                                            if (doc.getString(dept) != "Cleared") {
-                                                studentGlobalClearingStatusTV.setText("Student Not Cleared");
-                                                return;
-                                            }
+
+                                        Student student = doc.toObject(Student.class);
+
+                                        if (!student.isCleared()) {
+                                            studentGlobalClearingStatusTV.setText("Student Not Cleared");
+                                            printCertBtn.setClickable(false);
+                                            studentGlobalClearingStatusTV.setBackgroundColor(Color.RED);
+                                        } else {
+                                            studentGlobalClearingStatusTV.setText("Student Cleared");
+                                            printCertBtn.setClickable(true);
+                                            studentGlobalClearingStatusTV.setBackgroundColor(Color.GREEN);
                                         }
 
-                                        studentGlobalClearingStatusTV.setText("Student Cleared");
-                                        studentGlobalClearingStatusTV.setBackgroundColor(Color.GREEN);
+
                                     }
 
                                 }

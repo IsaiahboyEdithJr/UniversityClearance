@@ -50,7 +50,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/single_clearance_details_item"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/print_cert_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stud_general_clearance_status-tv"
@@ -58,11 +58,10 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/print_cert_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_dark"
-        android:clickable="false"
         android:gravity="center_horizontal"
         android:padding="@dimen/mag_8dp"
         android:text="@string/print_certificate"

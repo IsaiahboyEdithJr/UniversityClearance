@@ -1,5 +1,6 @@
 package com.example.utumbi_project.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,6 +16,7 @@ import com.example.utumbi_project.OfficerNotificationsFragment.OfficerNotificati
 import com.example.utumbi_project.R;
 import com.example.utumbi_project.models.OfficerNotification;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -28,6 +30,8 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseAuth mAuth;
 
+    private Context context = null;
+
     public MyOfficerNotificationsFragmentRecyclerViewAdapter(List<OfficerNotification> items, OfficerNotificationsListener listener) {
         mValues = items;
         mListener = listener;
@@ -38,6 +42,8 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        context = parent.getContext();
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_officernotifications_item, parent, false);
         return new ViewHolder(view);
@@ -83,6 +89,8 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
 
         private void acceptRequest() {
 
+            final String[] depts = context.getResources().getStringArray(R.array.departments);
+
             OfficerNotification notification = mValues.get(getAdapterPosition());
             mFirebaseFirestore.collection("studentsclearance")
                     .document(notification.getUserID())
@@ -91,12 +99,34 @@ public class MyOfficerNotificationsFragmentRecyclerViewAdapter extends RecyclerV
                     );
 
 
-
             mFirebaseFirestore.collection("officernotifications")
                     .document(mAuth.getCurrentUser().getUid())
                     .collection("Notifications")
                     .document(notification.getNotificationId())
                     .delete();
+
+            //Check whether the student has finished clearance
+            mFirebaseFirestore.collection("studentsclearance")
+                    .document(mAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(
+                            documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+
+
+                                    for (String dept : depts) {
+                                        if (documentSnapshot.get(dept) != "Cleared") {
+                                            return;
+                                        }
+                                    }
+
+                                    mFirebaseFirestore.collection("students")
+                                            .document(mAuth.getCurrentUser().getUid())
+                                            .update("cleared", true);
+
+                                }
+                            }
+                    );
 
         }
 

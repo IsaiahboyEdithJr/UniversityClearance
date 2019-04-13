@@ -6,31 +6,43 @@
         <item
             android:id="@+id/admin_nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home" />
+            android:title="@string/home" />
         <item
             android:id="@+id/admin_nav_add_student"
             android:icon="@drawable/ic_account_box_black_24dp"
-            android:title="Add Student" />
+            android:title="@string/add_student_btn_text" />
         <item
             android:id="@+id/admin_nav_add_officer"
             android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Add Officer" />
+            android:title="@string/add_officer" />
         <item
             android:id="@+id/admin_nav_notifications"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/title_notifications" />
+        <item
+            android:id="@+id/admin_nav_list"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="@string/graduaation_list" />
+        <item
+            android:id="@+id/admin_nav_faculty"
+            android:icon="@drawable/ic_filter_list_black_24dp"
+            android:title="@string/filter_by_faculty" />
+        <item
+            android:id="@+id/admin_nav_deadline"
+            android:icon="@drawable/ic_today_black_24dp"
+            android:title="@string/deadline" />
     </group>
 
-    <item android:title="Accounts">
+    <item android:title="@string/accounts">
         <menu>
             <item
                 android:id="@+id/admin_nav_edit_profile"
                 android:icon="@drawable/ic_edit_black"
-                android:title="Edit Profile" />
+                android:title="@string/edit_profile_text" />
             <item
                 android:id="@+id/admin_nav_logout"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="Logout" />
+                android:title="@string/logout" />
         </menu>
     </item>
 
