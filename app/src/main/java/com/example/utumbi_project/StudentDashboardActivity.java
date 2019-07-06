@@ -4,17 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.utumbi_project.models.Student;
@@ -26,21 +22,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class StudentDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class StudentDashboardActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFireStoreDb;
     private StorageReference mStore;
 
-    //Navigation header widgets
-    private ImageView navHeaderIV;
-    private TextView navHeaderStudentNameTV;
-    private TextView navHeaderRegNoTV;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_dashboard);
+        setContentView(R.layout.app_bar_student_dashboard);
 
         //Instantiating the Firebase Member Variables
         mAuth = FirebaseAuth.getInstance();
@@ -53,29 +44,39 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
         getSupportActionBar().setTitle("Home");
 
         //Adding the drawer toggle icon in the toolbar
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+ /*       DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+*/
         //Getting the navigation drawer and adding the listener to it
-        NavigationView navigation = findViewById(R.id.nav_view);
-        navigation.setNavigationItemSelectedListener(this);
+      /*  NavigationView navigation = findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(this);*/
 
         //Getting the NavHeaderView
-        View navHeaderView = navigation.getHeaderView(0);
+        /*View navHeaderView = navigation.getHeaderView(0);
 
         //Getting the widgets in the navigation header
         navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
         navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
-        navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);*/
+
+        //Extras
+        CardView studentClearanceCard = findViewById(R.id.studentClearanceCard);
+        studentClearanceCard.setOnClickListener(view -> startActivity(new Intent(this, StudentHomeActivity.class)));
+
+        CardView studentDetailsCard = findViewById(R.id.studentDetailsCard);
+        studentDetailsCard.setOnClickListener(view -> startActivity(new Intent(this, StudentDetailsActivity.class)));
+
+        CardView StudentEditProfileCard = findViewById(R.id.studentDetailsCard);
+        StudentEditProfileCard.setOnClickListener(view -> startActivity(new Intent(this, StudentEditProfileActivity.class)));
 
     }
 
     // Handle navigation drawer item clicks
-    @Override
+//    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         int id = menuItem.getItemId();
@@ -96,8 +97,8 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
             logout();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -155,8 +156,8 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
     }
 
     private void updateNavHeaderLayout(Student student) {
-        navHeaderStudentNameTV.setText(student.getName());
-        navHeaderRegNoTV.setText(student.getRegNo());
+//        navHeaderStudentNameTV.setText(student.getName());
+//        navHeaderRegNoTV.setText(student.getRegNo());
 
         if (student.getImageUrl() != null) {
 
@@ -166,7 +167,7 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
                     .addOnSuccessListener(
                             bytes -> {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                navHeaderIV.setImageBitmap(bitmap);
+//                                navHeaderIV.setImageBitmap(bitmap);
                             }
                     ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
         }
