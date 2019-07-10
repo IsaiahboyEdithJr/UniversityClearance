@@ -93,6 +93,7 @@ public class ClearanceRVAdapter extends RecyclerView.Adapter<ClearanceRVAdapter.
 
                                                     if (e != null) {
                                                         Log.e(TAG, "onBindViewHolder: ", e);
+                                                        return;
                                                     }
 
                                                     if (!queryDocumentSnapshots.isEmpty()) {

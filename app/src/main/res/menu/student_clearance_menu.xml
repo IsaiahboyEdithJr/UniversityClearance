@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/option_menu_start_clearance"
-        android:icon="@drawable/ic_check_black_24dp"
+        android:id="@+id/nav_logout"
         android:iconTint="@android:color/white"
-        android:title="Start"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText" />
+        android:title="Logout" />
 
 </menu>

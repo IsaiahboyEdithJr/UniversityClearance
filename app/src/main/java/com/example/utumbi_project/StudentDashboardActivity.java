@@ -1,114 +1,139 @@
 package com.example.utumbi_project;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.utumbi_project.models.Student;
+import com.example.utumbi_project.models.Officer;
+import com.example.utumbi_project.models.OfficerNotification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class StudentDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.HashMap;
+import java.util.Map;
+
+public class StudentDashboardActivity extends AppCompatActivity {
+    private static final String TAG = "StudentDashboardActivit";
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore mFireStoreDb;
-    private StorageReference mStore;
 
-    //Navigation header widgets
-    private ImageView navHeaderIV;
-    private TextView navHeaderStudentNameTV;
-    private TextView navHeaderRegNoTV;
+    //ProgressDialog
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_dashboard);
+        setContentView(R.layout.app_bar_student_dashboard);
 
         //Instantiating the Firebase Member Variables
         mAuth = FirebaseAuth.getInstance();
-        mFireStoreDb = FirebaseFirestore.getInstance();
-        mStore = FirebaseStorage.getInstance().getReference().child("avatars");
+
+        //Init ProgressDialog
+        progressDialog = new ProgressDialog(this);
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Home");
 
-        //Adding the drawer toggle icon in the toolbar
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        //Extras
+        CardView requestClearanceCard = findViewById(R.id.requestClearanceCard);
+        requestClearanceCard.setOnClickListener(view -> requestClearance());
+        //Should Request Clearance
 
-        //Getting the navigation drawer and adding the listener to it
-        NavigationView navigation = findViewById(R.id.nav_view);
-        navigation.setNavigationItemSelectedListener(this);
+        CardView viewStudentCleanceCard = findViewById(R.id.viewClearanceStatusCard);
+        viewStudentCleanceCard.setOnClickListener(view -> startActivity(new Intent(this, StudentHomeActivity.class)));
 
-        //Getting the NavHeaderView
-        View navHeaderView = navigation.getHeaderView(0);
+        CardView studentDetailsCard = findViewById(R.id.studentDetailsCard);
+        studentDetailsCard.setOnClickListener(view -> startActivity(new Intent(this, StudentDetailsActivity.class)));
 
-        //Getting the widgets in the navigation header
-        navHeaderIV = navHeaderView.findViewById(R.id.nav_header_iv);
-        navHeaderStudentNameTV = navHeaderView.findViewById(R.id.nav_header_student_name);
-        navHeaderRegNoTV = navHeaderView.findViewById(R.id.navHeaderStudentRegNo);
+        CardView StudentEditProfileCard = findViewById(R.id.editStudentDetailsCard);
+        StudentEditProfileCard.setOnClickListener(view -> startActivity(new Intent(this, StudentEditProfileActivity.class)));
+
 
     }
 
-    // Handle navigation drawer item clicks
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    private void requestClearance() {
 
-        int id = menuItem.getItemId();
+        progressDialog.setTitle("Requesting Clearance");
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCanceledOnTouchOutside(false);
 
-        if (id == R.id.nav_home) {
-            Intent intent = new Intent(this, StudentDashboardActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_request) {
-            Intent intent = new Intent(this, StudentHomeActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_edit_details) {
-            Intent intent = new Intent(this, StudentEditProfileActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_details) {
-            Intent intent = new Intent(this, StudentDetailsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            logout();
+        FirebaseFirestore.getInstance().collection("studentsclearance")
+                .document(mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+
+                                if (!task.getResult().exists()) {
+                                    Log.d(TAG, "requestClearance: Starting...");
+                                    requestToBeCleared();
+
+                                } else {
+                                    Toast.makeText(this, "Clearance Started", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+
+                            } else {
+                                Log.e(TAG, "requestClearance: Error", task.getException());
+                                Toast.makeText(this, "Error checking request status " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                );
+    }
+
+    private void requestToBeCleared() {
+
+        String[] depts = getResources().getStringArray(R.array.departments);
+
+        Map<String, String> clearanceMap = new HashMap<>();
+
+        for (String dept : depts) {
+
+            clearanceMap.put(dept, "Not Requested");
+
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        FirebaseFirestore.getInstance().collection("studentsclearance")
+                .document(mAuth.getCurrentUser().getUid())
+                .set(clearanceMap)
+                .addOnSuccessListener(aVoid -> checkAvailableOfficersAndSendNotification())
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "requestToBeCleared: Failed", e);
+                    Toast.makeText(this, "Request failed: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                });
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.student_clearance_menu, menu);
+
         return true;
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.nav_logout) {
+            logout();
         }
+
+        return true;
     }
 
     //Logging out the current authenticated user
@@ -118,59 +143,76 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
         finish();
     }
 
+
+    private void checkAvailableOfficersAndSendNotification() {
+
+        String[] depts = getResources().getStringArray(R.array.departments);
+
+        FirebaseFirestore.getInstance().collection("officers")
+                .get()
+                .addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+
+                                if (!task.getResult().isEmpty()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        Officer officer = document.toObject(Officer.class);
+
+                                        for (String dept : depts) {
+
+                                            if (officer.getDeptName().equalsIgnoreCase(dept)) {
+
+
+                                                OfficerNotification notification = new OfficerNotification(mAuth.getCurrentUser().getUid(), dept, mAuth.getCurrentUser().getEmail(), "Clearance");
+
+                                                FirebaseFirestore.getInstance().collection("officernotifications")
+                                                        .document(document.getId())
+                                                        .collection("Notifications")
+                                                        .add(notification)
+                                                        .addOnCompleteListener(task1 -> {
+                                                            if (task1.isSuccessful()) {
+                                                                Toast.makeText(this, "Clearance requested for " + dept, Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                Toast.makeText(this, "Error: " + task1.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                                                progressDialog.dismiss();
+                                                            }
+
+                                                        });
+
+                                                FirebaseFirestore.getInstance().collection("studentsclearance")
+                                                        .document(mAuth.getCurrentUser().getUid())
+                                                        .update(dept, "Pending");
+
+                                            }
+                                        }
+
+                                    }
+
+                                    progressDialog.dismiss();
+
+                                } else {
+                                    Toast.makeText(this, "No officers yet", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+
+                            } else {
+                                Toast.makeText(this, "Error getting officers: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        }
+                );
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             startActivity(new Intent(this, LoginRouterActivity.class));
-        } else {
-            updateUI(user.getUid());
         }
-    }
-
-
-    private void updateUI(String userUid) {
-        DocumentReference studRef = mFireStoreDb.collection("students").document(userUid);
-
-        studRef.get()
-                .addOnCompleteListener(
-                        task -> {
-                            if (task.isSuccessful()) {
-
-                                DocumentSnapshot snapshot = task.getResult();
-
-                                if (snapshot.exists()) {
-                                    Student student = snapshot.toObject(Student.class);
-                                    updateNavHeaderLayout(student);
-
-                                } else {
-                                    Toast.makeText(this, "User hasn't profle yet", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Toast.makeText(this, "Getting user data: " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                );
-    }
-
-    private void updateNavHeaderLayout(Student student) {
-        navHeaderStudentNameTV.setText(student.getName());
-        navHeaderRegNoTV.setText(student.getRegNo());
-
-        if (student.getImageUrl() != null) {
-
-            StorageReference fileRef = mStore.child(student.getImageUrl());
-            final long MB = 1024 * 1024;
-            fileRef.getBytes(MB)
-                    .addOnSuccessListener(
-                            bytes -> {
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                navHeaderIV.setImageBitmap(bitmap);
-                            }
-                    ).addOnFailureListener(e -> Toast.makeText(this, "Getting image error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
-        }
-
     }
 
 

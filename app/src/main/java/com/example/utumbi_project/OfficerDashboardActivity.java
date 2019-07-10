@@ -62,6 +62,7 @@ public class OfficerDashboardActivity extends AppCompatActivity
         setSupportActionBar(officerTB);
 
         mAuth = FirebaseAuth.getInstance();
+
         mDb = FirebaseFirestore.getInstance();
 
         officerfspa = new OfficerStatePagerAdapter(getSupportFragmentManager());

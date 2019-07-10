@@ -108,8 +108,8 @@ public class OfficerNotificationsFragment extends Fragment {
                             if (values.isEmpty()) {
                                 Toast.makeText(getActivity(), "No notifications found", Toast.LENGTH_SHORT).show();
                             } else {
+                                notifications.clear();
                                 for (QueryDocumentSnapshot document : values) {
-
                                     OfficerNotification notification = document.toObject(OfficerNotification.class);
                                     notification.setNotificationId(document.getId());
                                     notifications.add(notification);
